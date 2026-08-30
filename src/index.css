@@ -92,4 +92,24 @@
 		margin: 0;
 		vertical-align: top;
 	}
+
+	@keyframes shimmer {
+		0% {
+			background-position: 200% 0;
+		}
+		100% {
+			background-position: -200% 0;
+		}
+	}
+
+	.animate-shimmer {
+		animation: shimmer 1.5s infinite linear;
+		background: linear-gradient(
+			90deg,
+			var(--color-ink-800) 25%,
+			var(--color-ink-700) 50%,
+			var(--color-ink-800) 75%
+		);
+		background-size: 400% 100%;
+	}
 }
