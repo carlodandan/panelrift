@@ -1,0 +1,95 @@
+/* src/index.css */
+
+@import 'tailwindcss';
+
+/**
+ * Design tokens. Two palettes for one theme: a near-black chrome for the app
+ * shell, and a genuinely black reader surface so page art has nothing competing
+ * with it. Accent is violet -> cyan, used sparingly for interactive affordances.
+ */
+@theme {
+	--color-ink-950: #07080c;
+	--color-ink-900: #0b0c11;
+	--color-ink-850: #12141b;
+	--color-ink-800: #181b24;
+	--color-ink-700: #232733;
+	--color-ink-600: #333846;
+	--color-ink-400: #6b7280;
+	--color-ink-200: #c7cbd6;
+	--color-ink-100: #e7e9ef;
+
+	--color-accent-400: #a78bfa;
+	--color-accent-500: #8b5cf6;
+	--color-accent-600: #7c3aed;
+	--color-cyan-accent: #38bdf8;
+
+	--font-sans: 'Inter var', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+	--radius-card: 0.75rem;
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	/* Respect users who have asked the OS for less motion. */
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+
+	body {
+		background-color: var(--color-ink-950);
+		color: var(--color-ink-100);
+		font-family: var(--font-sans);
+		text-rendering: optimizeLegibility;
+	}
+
+	/* One visible focus ring everywhere, driven by :focus-visible so it does not
+	   fire on mouse clicks. Removing it would fail keyboard users outright. */
+	:focus-visible {
+		outline: 2px solid var(--color-accent-400);
+		outline-offset: 2px;
+		border-radius: 2px;
+	}
+
+	::selection {
+		background-color: var(--color-accent-600);
+		color: #fff;
+	}
+}
+
+@layer utilities {
+	/* Clamp a description to N lines without measuring anything in JS. */
+	.line-clamp-fade {
+		mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+	}
+
+	.scrollbar-none {
+		scrollbar-width: none;
+	}
+
+	.scrollbar-none::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* Reader images: never exceed the viewport width, never leave a seam between
+	   stacked pages (webtoon art is cut mid-panel and must butt together). */
+	.reader-page {
+		display: block;
+		width: 100%;
+		height: auto;
+		margin: 0;
+		vertical-align: top;
+	}
+}
