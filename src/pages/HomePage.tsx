@@ -32,12 +32,12 @@ function HeroSlide({
 		>
 			{/* Full-bleed blurred cover backdrop */}
 			<div className="absolute inset-0">
-				<CoverImage src={series.cover_url} alt="" className="h-full w-full object-cover blur-2xl brightness-[0.3]" eager={rank === 1} />
+				<CoverImage src={series.cover_url} alt="" className="h-full w-full object-cover blur-2xl brightness-[0.55]" eager={rank === 1} />
 			</div>
 			{/* Left-to-right gradient overlay so text is always readable */}
-			<div className="absolute inset-0 bg-gradient-to-r from-ink-950/95 via-ink-950/70 to-ink-950/30" />
+			<div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/50 to-ink-950/10" />
 			{/* Bottom fade for dots */}
-			<div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink-950/90 to-transparent" />
+			<div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink-950/80 to-transparent" />
 
 			{/* Content — re-constrained inside the bleed */}
 			<div className="relative mx-auto flex h-full max-w-7xl flex-col gap-6 px-4 py-8 sm:flex-row sm:items-center sm:px-6 sm:py-10 lg:px-8">
