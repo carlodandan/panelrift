@@ -4,9 +4,7 @@ import { cn } from '../lib/cn';
 
 /** A single shimmering block. Sized by the caller. */
 export function Skeleton({ className }: { className?: string }) {
-	return (
-		<div className={cn('animate-shimmer rounded-md', className)} aria-hidden="true" />
-	);
+	return <div className={cn('animate-shimmer rounded-md', className)} aria-hidden="true" />;
 }
 
 /**
