@@ -21,6 +21,18 @@
 	"services": [{ "binding": "API", "service": "manhwa-api" }],
 
 	/**
+	 * The worker also requires a shared secret, which is not declared here because
+	 * secrets never belong in config. Set the same value on both ends:
+	 *
+	 *   wrangler pages secret put PROXY_SECRET          # this project
+	 *   cd ../manga-api && wrangler secret put PROXY_SECRET
+	 *
+	 * functions/api/[[path]].ts reads it as env.PROXY_SECRET and forwards it in
+	 * X-Proxy-Secret. Pages keeps Production and Preview secrets separate, so set it
+	 * for both or preview deploys get 403 on /api/*.
+	 */
+
+	/**
 	 * Named environments do not inherit bindings from the top level, so preview
 	 * has to repeat it. Without this, /api/* returns 500 on every preview deploy
 	 * while production works fine.

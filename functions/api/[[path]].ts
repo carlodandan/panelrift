@@ -16,6 +16,13 @@
 interface Env {
 	/** Service binding to the deployed `manhwa-api` worker. See wrangler.jsonc. */
 	API: { fetch(request: Request): Promise<Response> };
+	/**
+	 * Shared secret the worker checks before serving anything. Set it on both ends:
+	 * `wrangler pages secret put PROXY_SECRET` here, `wrangler secret put
+	 * PROXY_SECRET` in ../manga-api. It stays server-side, so unlike anything in the
+	 * bundle it is never visible to a browser.
+	 */
+	PROXY_SECRET?: string;
 }
 
 /** The parts of the Pages Functions context this handler touches. */
@@ -32,5 +39,12 @@ export async function onRequest({ request, env }: RouteContext): Promise<Respons
 	// Forward the original headers rather than building a bare request: the worker
 	// rate-limits on CF-Connecting-IP, and without it every visitor shares one
 	// bucket, where READ_LIMITER's 60/min would throttle the whole site at once.
-	return env.API.fetch(new Request(url, { method: request.method, headers: request.headers }));
+	const headers = new Headers(request.headers);
+
+	// Drop any inbound value before setting our own, so a caller cannot smuggle a
+	// secret of their choosing through the proxy.
+	headers.delete('X-Proxy-Secret');
+	if (env.PROXY_SECRET) headers.set('X-Proxy-Secret', env.PROXY_SECRET);
+
+	return env.API.fetch(new Request(url, { method: request.method, headers }));
 }

@@ -52,9 +52,27 @@ Two things to keep in mind:
 - Adding `wrangler.jsonc` means the dashboard's own Bindings and Variables settings
   for this project are ignored. Move anything configured there into the file.
 
+### The proxy secret
+
+The binding alone stops being enough the moment the worker has any public route, so
+the Function also presents a shared secret the worker checks. It lives in
+`PROXY_SECRET` and never reaches a browser, because the Function runs server-side —
+unlike `VITE_API_BASE_URL`, which was compiled into the bundle and readable by anyone
+in devtools. Set the same value on both ends:
+
+```bash
+wrangler pages secret put PROXY_SECRET                  # here
+cd ../manga-api && wrangler secret put PROXY_SECRET
+```
+
+Pages keeps Production and Preview secrets separate, so set it for both or preview
+deploys get `403` on `/api/*`. The Function deletes any inbound `X-Proxy-Secret`
+before setting its own, so a caller cannot smuggle a value of their choosing through.
+
 To exercise the Function locally instead of the Vite proxy, run
 `wrangler pages dev dist --service API=manhwa-api` with the worker running next to
-it, and drop the `rewrite` from the Vite proxy so the `/api` prefix survives.
+it, and drop the `rewrite` from the Vite proxy so the `/api` prefix survives. Neither
+side needs the secret locally: the worker skips the check when `PROXY_SECRET` is unset.
 
 ## Routes
 
