@@ -1,5 +1,3 @@
-// src/components/SeriesCard.tsx
-
 import { Link } from 'react-router-dom';
 import type { ManhwaSummary } from '../api/types';
 import { CoverImage } from './CoverImage';

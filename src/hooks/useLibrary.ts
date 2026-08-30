@@ -1,5 +1,3 @@
-// src/hooks/useLibrary.ts
-
 import { useCallback, useEffect, useState } from 'react';
 import type { ManhwaSummary } from '../api/types';
 

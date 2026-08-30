@@ -1,5 +1,3 @@
-// src/api/client.ts
-
 import type {
 	Chapter,
 	ChapterList,

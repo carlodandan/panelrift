@@ -1,5 +1,3 @@
-// src/components/Pagination.tsx
-
 import { cn } from '../lib/cn';
 
 interface Props {

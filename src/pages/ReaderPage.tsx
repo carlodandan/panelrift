@@ -1,5 +1,3 @@
-// src/pages/ReaderPage.tsx
-
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../api/client';

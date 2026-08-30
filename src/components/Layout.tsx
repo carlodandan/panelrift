@@ -1,5 +1,3 @@
-// src/components/Layout.tsx
-
 import { useEffect } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { SearchBar } from './SearchBar';
@@ -15,7 +13,7 @@ function Logo() {
 	return (
 		<Link to="/" className="flex shrink-0 items-center gap-2" aria-label="Panelrift, home">
 			<img
-				src="/panelrift_logo.png"
+				src="/icons/android-icon-192x192.png"
 				alt=""
 				className="h-7 w-7 rounded-md object-cover"
 				aria-hidden="true"
@@ -90,7 +88,7 @@ export function Layout() {
 						<div className="space-y-4">
 							<Link to="/" className="inline-flex items-center gap-2" aria-label="Panelrift home">
 								<img
-									src="/panelrift_logo.png"
+									src="/icons/android-icon-192x192.png"
 									alt=""
 									className="h-8 w-8 rounded-md object-cover"
 									aria-hidden="true"

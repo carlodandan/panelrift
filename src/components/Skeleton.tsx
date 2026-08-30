@@ -1,5 +1,3 @@
-// src/components/Skeleton.tsx
-
 import { cn } from '../lib/cn';
 
 /** A single shimmering block. Sized by the caller. */

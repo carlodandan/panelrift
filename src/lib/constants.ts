@@ -1,5 +1,3 @@
-// src/lib/constants.ts
-
 /** The API rejects search terms shorter than this with a 400. */
 export const MIN_TERM = 2;
 

@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import { VitePWA } from 'vite-plugin-pwa';
+import Sitemap from 'vite-plugin-sitemap';
 
 /**
  * The `/api` prefix is proxied to a locally running manhwa-api worker in dev, so
@@ -11,7 +13,28 @@ import tailwindcss from '@tailwindcss/vite';
  * VITE_API_BASE_URL unset in both cases — see .env.example.
  */
 export default defineConfig({
-	plugins: [react(), tailwindcss()],
+	plugins: [
+		react(),
+		tailwindcss(),
+		VitePWA({
+			registerType: 'autoUpdate',
+			workbox: {
+				globPatterns: ['**/*.{js,jsx,ts,tsx,css,html,ico,png,jpg,jpeg,webp,svg,woff,woff2,ttf,eot,xml,txt}'],
+			},
+		}),
+		Sitemap({
+			hostname: 'https://panelrift.pages.dev',
+			dynamicRoutes: ['/', '/rankings', '/search'],
+			readable: true,
+			robots: [
+				{
+					userAgent: '*',
+					allow: '/',
+					crawlDelay: 2,
+				},
+			],
+		}),
+	],
 	server: {
 		port: 5173,
 		proxy: {

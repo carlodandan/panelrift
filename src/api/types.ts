@@ -1,4 +1,3 @@
-// src/api/types.ts
 //
 // Mirror of the worker's public contract (manhwa-api/src/types.ts). Kept as a
 // hand-written copy rather than imported across package boundaries so the client

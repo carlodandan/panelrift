@@ -1,5 +1,3 @@
-// src/pages/RankingsPage.tsx
-
 import { useSearchParams } from 'react-router-dom';
 import { api } from '../api/client';
 import { PERIODS, PERIOD_LABELS, type Period, type RankingPeriod } from '../api/types';

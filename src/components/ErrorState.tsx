@@ -1,5 +1,3 @@
-// src/components/ErrorState.tsx
-
 import { ApiError } from '../api/client';
 
 interface Props {

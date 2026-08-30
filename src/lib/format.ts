@@ -1,5 +1,3 @@
-// src/lib/format.ts
-
 /** Render a rating as one decimal, or an em dash when the API gave us null. */
 export function formatRating(rating: number | null): string {
 	return rating === null ? '—' : rating.toFixed(1);

@@ -1,5 +1,3 @@
-// src/pages/LibraryPage.tsx
-
 import { Link } from 'react-router-dom';
 import { useBookmarks, useProgress } from '../hooks/useLibrary';
 import { CoverImage } from '../components/CoverImage';

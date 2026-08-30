@@ -1,5 +1,3 @@
-// src/hooks/useResource.ts
-
 import { useCallback, useEffect, useState } from 'react';
 
 export interface Resource<T> {
