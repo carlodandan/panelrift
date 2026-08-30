@@ -30,53 +30,80 @@ function HeroSlide({
 			style={{ opacity: active ? 1 : 0, pointerEvents: active ? 'auto' : 'none' }}
 			aria-hidden={!active}
 		>
-			{/* Blurred backdrop */}
-			<div className="absolute inset-0 opacity-25">
-				<CoverImage src={series.cover_url} alt="" className="h-full w-full blur-2xl" eager={rank === 1} />
+			{/* Full-bleed blurred cover backdrop */}
+			<div className="absolute inset-0">
+				<CoverImage src={series.cover_url} alt="" className="h-full w-full object-cover blur-2xl brightness-[0.3]" eager={rank === 1} />
 			</div>
-			<div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/85 to-transparent" />
-			{/* Bottom gradient so dots sit on a readable surface */}
-			<div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-ink-950/80 to-transparent" />
+			{/* Left-to-right gradient overlay so text is always readable */}
+			<div className="absolute inset-0 bg-gradient-to-r from-ink-950/95 via-ink-950/70 to-ink-950/30" />
+			{/* Bottom fade for dots */}
+			<div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink-950/90 to-transparent" />
 
-			<div className="relative flex h-full flex-col gap-6 p-6 sm:flex-row sm:items-center sm:p-8">
+			{/* Content — re-constrained inside the bleed */}
+			<div className="relative mx-auto flex h-full max-w-7xl flex-col gap-6 px-4 py-8 sm:flex-row sm:items-center sm:px-6 sm:py-10 lg:px-8">
+				{/* Cover art */}
 				<CoverImage
 					src={series.cover_url}
 					alt={series.title}
 					eager={rank === 1}
-					className="aspect-2/3 w-36 shrink-0 rounded-lg ring-1 ring-ink-600 sm:w-44"
+					className="aspect-2/3 w-32 shrink-0 rounded-xl shadow-2xl ring-1 ring-white/10 sm:w-44 lg:w-52"
 				/>
-				<div className="min-w-0">
-					<p className="text-xs font-semibold uppercase tracking-widest text-accent-400">
-						#{rank} today
-					</p>
-					<h1 className="mt-2 text-2xl font-bold leading-tight text-ink-100 sm:text-3xl">
+
+				{/* Text block */}
+				<div className="min-w-0 flex-1">
+					{/* Rank badge */}
+					<span className="inline-flex items-center gap-1.5 rounded-full bg-accent-600/90 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white shadow">
+						<span>★</span> #{rank} Trending Today
+					</span>
+
+					{/* Title */}
+					<h1 className="mt-3 text-2xl font-extrabold leading-tight text-white drop-shadow sm:text-3xl lg:text-4xl">
 						{series.title}
 					</h1>
-					<div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-ink-200">
-						{series.rating !== null && (
-							<span className="text-amber-300">★ {formatRating(series.rating)}</span>
-						)}
+
+					{/* Meta pills */}
+					<div className="mt-3 flex flex-wrap items-center gap-2">
 						{series.latest_chapter && (
-							<span>Latest: chapter {formatChapterNumber(series.latest_chapter)}</span>
+							<span className="flex items-center gap-1 rounded-md bg-ink-800/80 px-2.5 py-1 text-xs font-medium text-ink-200 backdrop-blur-sm">
+								Ch. {formatChapterNumber(series.latest_chapter)}
+							</span>
+						)}
+						{series.rating !== null && (
+							<span className="flex items-center gap-1 rounded-md bg-ink-800/80 px-2.5 py-1 text-xs font-medium text-amber-300 backdrop-blur-sm">
+								★ {formatRating(series.rating)}
+							</span>
 						)}
 						{series.last_updated && (
-							<span className="text-ink-400">{formatUpstreamAge(series.last_updated)}</span>
+							<span className="rounded-md bg-ink-800/80 px-2.5 py-1 text-xs text-ink-400 backdrop-blur-sm">
+								{formatUpstreamAge(series.last_updated)}
+							</span>
 						)}
 					</div>
-					<Link
-						to={`/series/${encodeURIComponent(series.slug)}`}
-						className="mt-5 inline-block rounded-md bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-500"
-						tabIndex={active ? 0 : -1}
-					>
-						Start reading
-					</Link>
+
+					{/* CTA buttons */}
+					<div className="mt-5 flex flex-wrap gap-3">
+						<Link
+							to={`/series/${encodeURIComponent(series.slug)}`}
+							tabIndex={active ? 0 : -1}
+							className="inline-flex items-center gap-2 rounded-lg bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:bg-accent-500 active:scale-95"
+						>
+							▶ Start reading
+						</Link>
+						<Link
+							to={`/series/${encodeURIComponent(series.slug)}`}
+							tabIndex={active ? 0 : -1}
+							className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/10 active:scale-95"
+						>
+							Details
+						</Link>
+					</div>
 				</div>
 			</div>
 		</div>
 	);
 }
 
-/** Slideshow hero cycling through all of today's trending titles. */
+/** Full-bleed slideshow hero cycling through all of today's trending titles. */
 function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
 	const [current, setCurrent] = useState(0);
 	const paused = useRef(false);
@@ -107,8 +134,8 @@ function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
 
 	return (
 		<section
-			className="relative overflow-hidden rounded-card border border-ink-700 bg-ink-900"
-			style={{ minHeight: '16rem' }}
+			className="hero-breakout relative overflow-hidden bg-ink-900"
+			style={{ minHeight: '22rem' }}
 			onMouseEnter={() => { paused.current = true; }}
 			onMouseLeave={() => { paused.current = false; }}
 			onFocus={() => { paused.current = true; }}
@@ -139,7 +166,7 @@ function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
 								'h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400',
 								i === current
 									? 'w-6 bg-accent-400'
-									: 'w-2 bg-ink-600 hover:bg-ink-400',
+									: 'w-2 bg-white/30 hover:bg-white/60',
 							].join(' ')}
 						/>
 					))}

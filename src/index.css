@@ -93,28 +93,47 @@
 		vertical-align: top;
 	}
 
-	/* Smooth shimmer skeleton loading. Uses a moving gradient sweep instead of
-	   the jarring opacity-blink of animate-pulse. */
-	.animate-shimmer {
-		animation: shimmer 2s infinite linear;
+	/*
+	 * Breakout: escape any constrained container and go full viewport width.
+	 * Works by pulling left/right with negative margin then restoring with width.
+	 */
+	.hero-breakout {
+		margin-left: calc(50% - 50vw);
+		margin-right: calc(50% - 50vw);
+	}
+
+	/*
+	 * Skeleton shimmer — a light sweep on a dark base.
+	 *
+	 * Uses a ::after pseudo-element + translateX rather than animating
+	 * background-position, because background-position percentages are
+	 * poorly-specified and behave inconsistently across browsers (some just
+	 * show a static block). translateX is GPU-composited and always smooth.
+	 */
+	.skeleton {
+		position: relative;
+		overflow: hidden;
+		background-color: #181b24; /* ink-800 */
+	}
+
+	.skeleton::after {
+		content: '';
+		position: absolute;
+		inset: 0;
 		background: linear-gradient(
 			90deg,
-			var(--color-ink-800) 0%,
-			var(--color-ink-800) 30%,
-			var(--color-ink-600) 50%,
-			var(--color-ink-800) 70%,
-			var(--color-ink-800) 100%
+			transparent 0%,
+			rgba(255, 255, 255, 0.06) 40%,
+			rgba(255, 255, 255, 0.12) 50%,
+			rgba(255, 255, 255, 0.06) 60%,
+			transparent 100%
 		);
-		background-size: 300% 100%;
+		animation: skeleton-shimmer 1.8s ease-in-out infinite;
 	}
 }
 
-/* Keyframes live outside @layer so every browser picks them up reliably. */
-@keyframes shimmer {
-	0% {
-		background-position: 100% 0;
-	}
-	100% {
-		background-position: -100% 0;
-	}
+/* Keyframes outside any @layer — picked up unconditionally by every browser. */
+@keyframes skeleton-shimmer {
+	0%   { transform: translateX(-100%); }
+	100% { transform: translateX(100%); }
 }
