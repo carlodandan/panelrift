@@ -74,7 +74,7 @@ function HeroSlide({
 							</span>
 						)}
 						{series.last_updated && (
-							<span className="rounded-md bg-ink-800/80 px-2.5 py-1 text-xs text-ink-400 backdrop-blur-sm">
+							<span className="rounded-md bg-ink-800/80 px-2.5 py-1 text-xs text-ink-100 backdrop-blur-sm">
 								{formatUpstreamAge(series.last_updated)}
 							</span>
 						)}
@@ -87,14 +87,10 @@ function HeroSlide({
 							tabIndex={active ? 0 : -1}
 							className="inline-flex items-center gap-2 rounded-lg bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_16px_var(--color-accent-600)] transition hover:bg-accent-500 hover:shadow-[0_0_24px_var(--color-accent-500)] active:scale-95"
 						>
-							▶ Start reading
-						</Link>
-						<Link
-							to={`/series/${encodeURIComponent(series.slug)}`}
-							tabIndex={active ? 0 : -1}
-							className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/10 active:scale-95"
-						>
-							Details
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-4 shrink-0" aria-hidden="true">
+								<path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c1.68 0 3.282.515 4.75 1.408a.75.75 0 0 0 1-.707V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
+							</svg>
+							Start Reading
 						</Link>
 					</div>
 				</div>
