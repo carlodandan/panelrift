@@ -1,5 +1,6 @@
 // src/pages/HomePage.tsx
 
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api/client';
 import { PERIOD_LABELS, type Home, type ManhwaSummary, type Period } from '../api/types';
@@ -11,27 +12,42 @@ import { CardGridSkeleton, Skeleton } from '../components/Skeleton';
 import { ErrorState } from '../components/ErrorState';
 import { formatChapterNumber, formatRating, formatUpstreamAge } from '../lib/format';
 
-/** The lead card: the top of today's ranking, given room to breathe. */
-function Hero({ series }: { series: ManhwaSummary }) {
+const SLIDE_INTERVAL_MS = 5000;
+
+/** A single slide inside HeroSlideshow. */
+function HeroSlide({
+	series,
+	rank,
+	active,
+}: {
+	series: ManhwaSummary;
+	rank: number;
+	active: boolean;
+}) {
 	return (
-		<section className="relative overflow-hidden rounded-card border border-ink-700 bg-ink-900">
-			{/* Blurred cover as backdrop. aria-hidden: it is the same image as the
-			    foreground cover, so announcing it twice adds nothing. */}
-			<div className="absolute inset-0 opacity-25" aria-hidden="true">
-				<CoverImage src={series.cover_url} alt="" className="h-full w-full blur-2xl" eager />
+		<div
+			className="absolute inset-0 transition-opacity duration-700"
+			style={{ opacity: active ? 1 : 0, pointerEvents: active ? 'auto' : 'none' }}
+			aria-hidden={!active}
+		>
+			{/* Blurred backdrop */}
+			<div className="absolute inset-0 opacity-25">
+				<CoverImage src={series.cover_url} alt="" className="h-full w-full blur-2xl" eager={rank === 1} />
 			</div>
 			<div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/85 to-transparent" />
+			{/* Bottom gradient so dots sit on a readable surface */}
+			<div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-ink-950/80 to-transparent" />
 
-			<div className="relative flex flex-col gap-6 p-6 sm:flex-row sm:items-center sm:p-8">
+			<div className="relative flex h-full flex-col gap-6 p-6 sm:flex-row sm:items-center sm:p-8">
 				<CoverImage
 					src={series.cover_url}
 					alt={series.title}
-					eager
+					eager={rank === 1}
 					className="aspect-2/3 w-36 shrink-0 rounded-lg ring-1 ring-ink-600 sm:w-44"
 				/>
 				<div className="min-w-0">
 					<p className="text-xs font-semibold uppercase tracking-widest text-accent-400">
-						#1 today
+						#{rank} today
 					</p>
 					<h1 className="mt-2 text-2xl font-bold leading-tight text-ink-100 sm:text-3xl">
 						{series.title}
@@ -50,14 +66,89 @@ function Hero({ series }: { series: ManhwaSummary }) {
 					<Link
 						to={`/series/${encodeURIComponent(series.slug)}`}
 						className="mt-5 inline-block rounded-md bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-500"
+						tabIndex={active ? 0 : -1}
 					>
 						Start reading
 					</Link>
 				</div>
 			</div>
+		</div>
+	);
+}
+
+/** Slideshow hero cycling through all of today's trending titles. */
+function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
+	const [current, setCurrent] = useState(0);
+	const paused = useRef(false);
+	const total = items.length;
+
+	const next = useCallback(() => setCurrent((c) => (c + 1) % total), [total]);
+	const prev = useCallback(() => setCurrent((c) => (c - 1 + total) % total), [total]);
+
+	// Auto-advance every 5 seconds, pause while hovered or focused
+	useEffect(() => {
+		if (total <= 1) return;
+		const id = setInterval(() => {
+			if (!paused.current) next();
+		}, SLIDE_INTERVAL_MS);
+		return () => clearInterval(id);
+	}, [next, total]);
+
+	// Keyboard arrow navigation
+	const handleKeyDown = useCallback(
+		(e: React.KeyboardEvent) => {
+			if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+			if (e.key === 'ArrowLeft')  { e.preventDefault(); prev(); }
+		},
+		[next, prev],
+	);
+
+	if (total === 0) return null;
+
+	return (
+		<section
+			className="relative overflow-hidden rounded-card border border-ink-700 bg-ink-900"
+			style={{ minHeight: '16rem' }}
+			onMouseEnter={() => { paused.current = true; }}
+			onMouseLeave={() => { paused.current = false; }}
+			onFocus={() => { paused.current = true; }}
+			onBlur={() => { paused.current = false; }}
+			onKeyDown={handleKeyDown}
+			aria-label="Trending today slideshow"
+			aria-roledescription="carousel"
+		>
+			{items.map((series, i) => (
+				<HeroSlide key={series.slug} series={series} rank={i + 1} active={i === current} />
+			))}
+
+			{/* Dot navigation — middle bottom */}
+			{total > 1 && (
+				<div
+					className="absolute inset-x-0 bottom-4 flex justify-center gap-2"
+					role="tablist"
+					aria-label="Slides"
+				>
+					{items.map((series, i) => (
+						<button
+							key={series.slug}
+							role="tab"
+							aria-selected={i === current}
+							aria-label={`Slide ${i + 1}: ${series.title}`}
+							onClick={() => setCurrent(i)}
+							className={[
+								'h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400',
+								i === current
+									? 'w-6 bg-accent-400'
+									: 'w-2 bg-ink-600 hover:bg-ink-400',
+							].join(' ')}
+						/>
+					))}
+				</div>
+			)}
 		</section>
 	);
 }
+
 
 /** A horizontally scrolling rail, for the periods that are not the main grid. */
 function Rail({ title, to, items }: { title: string; to: string; items: ManhwaSummary[] }) {
@@ -143,7 +234,6 @@ export function HomePage() {
 
 	const { data } = home;
 	const today = data['1d']?.manhwa ?? [];
-	const [lead, ...rest] = today;
 
 	return (
 		<div className="space-y-12">
@@ -160,11 +250,11 @@ export function HomePage() {
 				</p>
 			)}
 
-			{lead && <Hero series={lead} />}
+			<HeroSlideshow items={today} />
 
 			<ContinueReading />
 
-			{rest.length > 0 && (
+			{today.length > 1 && (
 				<section className="space-y-4">
 					<div className="flex items-baseline justify-between">
 						<h2 className="text-lg font-semibold text-ink-100">Trending today</h2>
@@ -175,7 +265,7 @@ export function HomePage() {
 							See all
 						</Link>
 					</div>
-					<SeriesGrid items={rest.slice(0, 18)} ranked />
+					<SeriesGrid items={today.slice(1, 19)} ranked />
 				</section>
 			)}
 
