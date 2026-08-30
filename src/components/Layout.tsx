@@ -1,5 +1,6 @@
 // src/components/Layout.tsx
 
+import { useEffect } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { SearchBar } from './SearchBar';
 import { cn } from '../lib/cn';
@@ -20,7 +21,13 @@ function Logo() {
 }
 
 export function Layout() {
-	const { pathname } = useLocation();
+	const { pathname, search } = useLocation();
+
+	// Automatically scroll to the top of the page whenever the route changes.
+	// This ensures clicking footer links doesn't leave the user stuck at the bottom.
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [pathname, search]);
 
 	return (
 		<div className="flex min-h-dvh flex-col bg-ink-950">
@@ -70,16 +77,79 @@ export function Layout() {
 				<Outlet />
 			</main>
 
-			<footer className="border-t border-ink-800 px-4 py-8 text-sm text-ink-400">
-				<div className="mx-auto max-w-7xl space-y-2">
-					<p>
-						Panelrift is a reader UI over <span className="font-mono text-ink-200">manhwa-api</span>
-						. It stores nothing: every page is fetched live and cached at the edge.
-					</p>
-					<p>
-						Series metadata and artwork belong to their respective creators and publishers.
-						Bookmarks and reading progress stay in this browser.
-					</p>
+			<footer className="border-t border-ink-800 bg-ink-900/60">
+				<div className="mx-auto max-w-7xl px-4 py-12">
+					{/* Top grid: brand + nav columns */}
+					<div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+						{/* Brand */}
+						<div className="space-y-4">
+							<Link to="/" className="inline-flex items-center gap-2" aria-label="Panelrift home">
+								<img src="/panelrift_logo.png" alt="" className="h-8 w-8 rounded-md object-cover" aria-hidden="true" />
+								<span className="text-lg font-bold tracking-widest text-accent-400">PANELRIFT</span>
+							</Link>
+							<p className="max-w-xs text-sm leading-relaxed text-ink-400">
+								A fast, clean reader for manhwa and webtoons. Rankings, search, and a
+								distraction-free vertical reader — all fetched live, nothing stored on our end.
+							</p>
+						</div>
+
+						{/* Navigate */}
+						<div className="space-y-4">
+							<h3 className="text-xs font-semibold uppercase tracking-widest text-ink-200">Navigate</h3>
+							<ul className="space-y-2">
+								{NAV.map((item) => (
+									<li key={item.to}>
+										<Link
+											to={item.to}
+											className="text-sm text-ink-400 transition hover:text-accent-400"
+										>
+											{item.label}
+										</Link>
+									</li>
+								))}
+								<li>
+									<Link
+										to="/rankings?period=1d"
+										className="text-sm text-ink-400 transition hover:text-accent-400"
+									>
+										Trending today
+									</Link>
+								</li>
+								<li>
+									<Link
+										to="/rankings?period=1w"
+										className="text-sm text-ink-400 transition hover:text-accent-400"
+									>
+										This week
+									</Link>
+								</li>
+							</ul>
+						</div>
+
+						{/* Disclaimer */}
+						<div className="space-y-4">
+							<h3 className="text-xs font-semibold uppercase tracking-widest text-ink-200">Disclaimer</h3>
+							<p className="text-sm leading-relaxed text-ink-400">
+								Panelrift does not host or store any manga or manhwa content. All series
+								metadata, artwork, and chapters belong to their respective creators and
+								publishers.
+							</p>
+							<p className="text-sm leading-relaxed text-ink-400">
+								Bookmarks and reading progress are stored locally in your browser and never
+								sent to any server.
+							</p>
+						</div>
+					</div>
+
+					{/* Bottom bar */}
+					<div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-ink-800 pt-6 sm:flex-row">
+						<p className="text-xs text-ink-400">
+							© {new Date().getFullYear()} Panelrift. For personal use only.
+						</p>
+						<p className="text-xs text-ink-400">
+							Built{' '}using{' '}<span className="font-mono text-ink-200">manhwa-api</span>
+						</p>
+					</div>
 				</div>
 			</footer>
 		</div>
