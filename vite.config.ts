@@ -18,7 +18,7 @@ export default defineConfig({
 			'/api': {
 				// `wrangler dev` in ../manga-api. The rewrite strips the prefix because
 				// this talks to the worker directly, not through the Pages Function.
-				target: 'http://127.0.0.1:8787',
+				target: 'http://127.0.0.1:8788',
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, ''),
 			},
