@@ -93,23 +93,28 @@
 		vertical-align: top;
 	}
 
-	@keyframes shimmer {
-		0% {
-			background-position: 200% 0;
-		}
-		100% {
-			background-position: -200% 0;
-		}
-	}
-
+	/* Smooth shimmer skeleton loading. Uses a moving gradient sweep instead of
+	   the jarring opacity-blink of animate-pulse. */
 	.animate-shimmer {
-		animation: shimmer 1.5s infinite linear;
+		animation: shimmer 2s infinite linear;
 		background: linear-gradient(
 			90deg,
-			var(--color-ink-800) 25%,
-			var(--color-ink-700) 50%,
-			var(--color-ink-800) 75%
+			var(--color-ink-800) 0%,
+			var(--color-ink-800) 30%,
+			var(--color-ink-600) 50%,
+			var(--color-ink-800) 70%,
+			var(--color-ink-800) 100%
 		);
-		background-size: 400% 100%;
+		background-size: 300% 100%;
+	}
+}
+
+/* Keyframes live outside @layer so every browser picks them up reliably. */
+@keyframes shimmer {
+	0% {
+		background-position: 100% 0;
+	}
+	100% {
+		background-position: -100% 0;
 	}
 }
