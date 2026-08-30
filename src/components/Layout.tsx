@@ -13,21 +13,8 @@ const NAV = [
 function Logo() {
 	return (
 		<Link to="/" className="flex shrink-0 items-center gap-2" aria-label="Panelrift, home">
-			<svg viewBox="0 0 32 32" className="h-7 w-7" aria-hidden="true">
-				<rect width="32" height="32" rx="8" fill="var(--color-ink-850)" />
-				<path d="M7 6h7l-3 8h5l-9 12 3-10H6z" fill="var(--color-accent-400)" />
-				<rect x="19" y="6" width="7" height="7" rx="2" fill="var(--color-cyan-accent)" />
-				<rect
-					x="19"
-					y="16"
-					width="7"
-					height="10"
-					rx="2"
-					fill="var(--color-cyan-accent)"
-					opacity="0.5"
-				/>
-			</svg>
-			<span className="text-lg font-bold tracking-tight text-ink-100">Panelrift</span>
+			<img src="/panelrift_logo.png" alt="" className="h-7 w-7 rounded-md object-cover" aria-hidden="true" />
+			<span className="text-lg font-bold tracking-widest text-accent-400">PANELRIFT</span>
 		</Link>
 	);
 }
