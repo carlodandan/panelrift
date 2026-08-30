@@ -91,3 +91,22 @@ export interface SearchResponse {
 export interface ApiErrorBody {
 	error: { code: string; message: string };
 }
+
+export interface RecentlyAddedItem {
+	title: string;
+	slug: string;
+	cover_url: string | null;
+	description: string | null;
+	rating: number | null;
+	views: number | null;
+	badge: string | null;
+}
+
+export interface RecentlyAddedResponse {
+	sort: string;
+	page: number;
+	count: number;
+	total: number;
+	total_pages: number;
+	results: RecentlyAddedItem[];
+}

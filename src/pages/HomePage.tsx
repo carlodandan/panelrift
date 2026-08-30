@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api/client';
-import { PERIOD_LABELS, type Home, type ManhwaSummary, type Period } from '../api/types';
+import { PERIOD_LABELS, type Home, type ManhwaSummary, type Period, type RecentlyAddedItem, type RecentlyAddedResponse } from '../api/types';
 import { useResource } from '../hooks/useResource';
 import { useProgress } from '../hooks/useLibrary';
 import { SeriesGrid } from '../components/SeriesCard';
@@ -218,6 +218,10 @@ function ContinueReading() {
 
 export function HomePage() {
 	const home = useResource<Home>((signal) => api.home(signal), []);
+	const recent = useResource<RecentlyAddedResponse>(
+		(signal) => api.recentlyAdded(1, signal),
+		[],
+	);
 
 	if (home.loading) {
 		return (
@@ -269,6 +273,8 @@ export function HomePage() {
 				</section>
 			)}
 
+			<RecentlyAdded resource={recent} />
+
 			<Rail title={PERIOD_LABELS['1w']} to="/rankings?period=1w" items={data['1w']?.manhwa ?? []} />
 			<Rail title={PERIOD_LABELS['1m']} to="/rankings?period=1m" items={data['1m']?.manhwa ?? []} />
 
@@ -276,5 +282,85 @@ export function HomePage() {
 				<p className="text-sm text-ink-400">No rankings were returned.</p>
 			)}
 		</div>
+	);
+}
+
+// ---------------------------------------------------------------------------
+// Recently Added
+// ---------------------------------------------------------------------------
+
+/** A single card in the Recently Added rail. */
+function RecentlyAddedCard({ item }: { item: RecentlyAddedItem }) {
+	return (
+		<li className="w-36 shrink-0 snap-start sm:w-40">
+			<Link
+				to={`/series/${encodeURIComponent(item.slug)}`}
+				className="group block focus:outline-none"
+			>
+				<div className="relative">
+					<CoverImage
+						src={item.cover_url}
+						alt={item.title}
+						className="aspect-2/3 w-full rounded-lg ring-1 ring-ink-700 transition group-hover:ring-accent-500"
+					/>
+					{item.badge && (
+						<span className="absolute left-1.5 top-1.5 rounded-sm bg-accent-600/90 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white backdrop-blur-sm">
+							{item.badge}
+						</span>
+					)}
+				</div>
+				<p className="mt-2 line-clamp-2 text-xs leading-snug text-ink-200 group-hover:text-accent-400">
+					{item.title}
+				</p>
+				{item.description && (
+					<p className="mt-1 line-clamp-2 text-[11px] leading-snug text-ink-400">
+						{item.description}
+					</p>
+				)}
+				<div className="mt-1 flex items-center gap-2 text-[11px] text-ink-400">
+					{item.rating !== null && (
+						<span className="text-amber-300">★ {formatRating(item.rating)}</span>
+					)}
+					{item.views !== null && (
+						<span>{item.views.toLocaleString()} views</span>
+					)}
+				</div>
+			</Link>
+		</li>
+	);
+}
+
+/** Horizontally scrolling "Recently Added" rail, fetched independently of /v1/home. */
+function RecentlyAdded({
+	resource,
+}: {
+	resource: ReturnType<typeof useResource<RecentlyAddedResponse>>;
+}) {
+	if (resource.error) return null; // fail silently — it's a bonus section
+
+	return (
+		<section className="space-y-3">
+			<div className="flex items-baseline justify-between">
+				<h2 className="text-lg font-semibold text-ink-100">Recently added</h2>
+			</div>
+
+			{resource.loading ? (
+				<ul className="scrollbar-none -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2">
+					{Array.from({ length: 8 }, (_, i) => (
+						<li key={i} className="w-36 shrink-0 space-y-2 sm:w-40">
+							<Skeleton className="aspect-2/3 w-full rounded-lg" />
+							<Skeleton className="h-3 w-4/5" />
+							<Skeleton className="h-3 w-3/5" />
+						</li>
+					))}
+				</ul>
+			) : resource.data && resource.data.results.length > 0 ? (
+				<ul className="scrollbar-none -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2">
+					{resource.data.results.map((item, i) => (
+						<RecentlyAddedCard key={`${item.slug}-${i}`} item={item} />
+					))}
+				</ul>
+			) : null}
+		</section>
 	);
 }

@@ -1,6 +1,6 @@
 // src/api/client.ts
 
-import type { Chapter, ChapterList, Home, Manhwa, RankingPeriod, SearchResponse } from './types';
+import type { Chapter, ChapterList, Home, Manhwa, RankingPeriod, RecentlyAddedResponse, SearchResponse } from './types';
 
 /**
  * Stays empty in both dev and production, so every request is same-origin under
@@ -77,4 +77,7 @@ export const api = {
 
 	chapter: (chapterId: string, signal?: AbortSignal) =>
 		request<Chapter>(`/v1/chapters/${encodeURIComponent(chapterId)}`, signal),
+
+	recentlyAdded: (page = 1, signal?: AbortSignal) =>
+		request<RecentlyAddedResponse>(`/v1/recently_added?page=${page}`, signal),
 };
