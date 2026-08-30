@@ -134,6 +134,10 @@
 
 /* Keyframes outside any @layer — picked up unconditionally by every browser. */
 @keyframes skeleton-shimmer {
-	0%   { transform: translateX(-100%); }
-	100% { transform: translateX(100%); }
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(100%);
+	}
 }

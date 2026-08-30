@@ -14,7 +14,12 @@ const NAV = [
 function Logo() {
 	return (
 		<Link to="/" className="flex shrink-0 items-center gap-2" aria-label="Panelrift, home">
-			<img src="/panelrift_logo.png" alt="" className="h-7 w-7 rounded-md object-cover" aria-hidden="true" />
+			<img
+				src="/panelrift_logo.png"
+				alt=""
+				className="h-7 w-7 rounded-md object-cover"
+				aria-hidden="true"
+			/>
 			<span className="text-lg font-bold tracking-widest text-accent-400">PANELRIFT</span>
 		</Link>
 	);
@@ -84,7 +89,12 @@ export function Layout() {
 						{/* Brand */}
 						<div className="space-y-4">
 							<Link to="/" className="inline-flex items-center gap-2" aria-label="Panelrift home">
-								<img src="/panelrift_logo.png" alt="" className="h-8 w-8 rounded-md object-cover" aria-hidden="true" />
+								<img
+									src="/panelrift_logo.png"
+									alt=""
+									className="h-8 w-8 rounded-md object-cover"
+									aria-hidden="true"
+								/>
 								<span className="text-lg font-bold tracking-widest text-accent-400">PANELRIFT</span>
 							</Link>
 							<p className="max-w-xs text-sm leading-relaxed text-ink-400">
@@ -95,7 +105,9 @@ export function Layout() {
 
 						{/* Navigate */}
 						<div className="space-y-4">
-							<h3 className="text-xs font-semibold uppercase tracking-widest text-ink-200">Navigate</h3>
+							<h3 className="text-xs font-semibold uppercase tracking-widest text-ink-200">
+								Navigate
+							</h3>
 							<ul className="space-y-2">
 								{NAV.map((item) => (
 									<li key={item.to}>
@@ -128,15 +140,16 @@ export function Layout() {
 
 						{/* Disclaimer */}
 						<div className="space-y-4">
-							<h3 className="text-xs font-semibold uppercase tracking-widest text-ink-200">Disclaimer</h3>
+							<h3 className="text-xs font-semibold uppercase tracking-widest text-ink-200">
+								Disclaimer
+							</h3>
 							<p className="text-sm leading-relaxed text-ink-400">
-								Panelrift does not host or store any manga or manhwa content. All series
-								metadata, artwork, and chapters belong to their respective creators and
-								publishers.
+								Panelrift does not host or store any manga or manhwa content. All series metadata,
+								artwork, and chapters belong to their respective creators and publishers.
 							</p>
 							<p className="text-sm leading-relaxed text-ink-400">
-								Bookmarks and reading progress are stored locally in your browser and never
-								sent to any server.
+								Bookmarks and reading progress are stored locally in your browser and never sent to
+								any server.
 							</p>
 						</div>
 					</div>
@@ -147,7 +160,7 @@ export function Layout() {
 							© {new Date().getFullYear()} Panelrift. For personal use only.
 						</p>
 						<p className="text-xs text-ink-400">
-							Built{' '}using{' '}<span className="font-mono text-ink-200">manhwa-api</span>
+							Built using <span className="font-mono text-ink-200">manhwa-api</span>
 						</p>
 					</div>
 				</div>

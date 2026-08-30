@@ -1,6 +1,14 @@
 // src/api/client.ts
 
-import type { Chapter, ChapterList, Home, Manhwa, RankingPeriod, RecentlyAddedResponse, SearchResponse } from './types';
+import type {
+	Chapter,
+	ChapterList,
+	Home,
+	Manhwa,
+	RankingPeriod,
+	RecentlyAddedResponse,
+	SearchResponse,
+} from './types';
 
 /**
  * Stays empty in both dev and production, so every request is same-origin under

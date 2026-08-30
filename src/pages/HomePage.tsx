@@ -3,7 +3,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api/client';
-import { PERIOD_LABELS, type Home, type ManhwaSummary, type Period, type RecentlyAddedItem, type RecentlyAddedResponse } from '../api/types';
+import {
+	PERIOD_LABELS,
+	type Home,
+	type ManhwaSummary,
+	type Period,
+	type RecentlyAddedItem,
+	type RecentlyAddedResponse,
+} from '../api/types';
 import { useResource } from '../hooks/useResource';
 import { useProgress } from '../hooks/useLibrary';
 import { SeriesGrid } from '../components/SeriesCard';
@@ -32,7 +39,12 @@ function HeroSlide({
 		>
 			{/* Full-bleed blurred cover backdrop */}
 			<div className="absolute inset-0">
-				<CoverImage src={series.cover_url} alt="" className="h-full w-full object-cover blur-2xl brightness-[0.55]" eager={rank === 1} />
+				<CoverImage
+					src={series.cover_url}
+					alt=""
+					className="h-full w-full object-cover blur-2xl brightness-[0.55]"
+					eager={rank === 1}
+				/>
 			</div>
 			{/* Left-to-right gradient overlay so text is always readable */}
 			<div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/50 to-ink-950/10" />
@@ -87,7 +99,13 @@ function HeroSlide({
 							tabIndex={active ? 0 : -1}
 							className="inline-flex items-center gap-2 rounded-lg bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_16px_var(--color-accent-600)] transition hover:bg-accent-500 hover:shadow-[0_0_24px_var(--color-accent-500)] active:scale-95"
 						>
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-4 shrink-0" aria-hidden="true">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+								fill="currentColor"
+								className="size-4 shrink-0"
+								aria-hidden="true"
+							>
 								<path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c1.68 0 3.282.515 4.75 1.408a.75.75 0 0 0 1-.707V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
 							</svg>
 							Start Reading
@@ -120,8 +138,14 @@ function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
 	// Keyboard arrow navigation
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent) => {
-			if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
-			if (e.key === 'ArrowLeft')  { e.preventDefault(); prev(); }
+			if (e.key === 'ArrowRight') {
+				e.preventDefault();
+				next();
+			}
+			if (e.key === 'ArrowLeft') {
+				e.preventDefault();
+				prev();
+			}
 		},
 		[next, prev],
 	);
@@ -132,10 +156,18 @@ function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
 		<section
 			className="hero-breakout relative overflow-hidden bg-ink-900"
 			style={{ minHeight: '28rem' }}
-			onMouseEnter={() => { paused.current = true; }}
-			onMouseLeave={() => { paused.current = false; }}
-			onFocus={() => { paused.current = true; }}
-			onBlur={() => { paused.current = false; }}
+			onMouseEnter={() => {
+				paused.current = true;
+			}}
+			onMouseLeave={() => {
+				paused.current = false;
+			}}
+			onFocus={() => {
+				paused.current = true;
+			}}
+			onBlur={() => {
+				paused.current = false;
+			}}
 			onKeyDown={handleKeyDown}
 			aria-label="Trending today slideshow"
 			aria-roledescription="carousel"
@@ -160,9 +192,7 @@ function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
 							onClick={() => setCurrent(i)}
 							className={[
 								'h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400',
-								i === current
-									? 'w-6 bg-accent-400'
-									: 'w-2 bg-white/30 hover:bg-white/60',
+								i === current ? 'w-6 bg-accent-400' : 'w-2 bg-white/30 hover:bg-white/60',
 							].join(' ')}
 						/>
 					))}
@@ -171,7 +201,6 @@ function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
 		</section>
 	);
 }
-
 
 /** A horizontally scrolling rail, for the periods that are not the main grid. */
 function Rail({ title, to, items }: { title: string; to: string; items: ManhwaSummary[] }) {
@@ -241,10 +270,7 @@ function ContinueReading() {
 
 export function HomePage() {
 	const home = useResource<Home>((signal) => api.home(signal), []);
-	const recent = useResource<RecentlyAddedResponse>(
-		(signal) => api.recentlyAdded(1, signal),
-		[],
-	);
+	const recent = useResource<RecentlyAddedResponse>((signal) => api.recentlyAdded(1, signal), []);
 
 	if (home.loading) {
 		return (
@@ -344,9 +370,7 @@ function RecentlyAddedCard({ item }: { item: RecentlyAddedItem }) {
 					{item.rating !== null && (
 						<span className="text-amber-300">★ {formatRating(item.rating)}</span>
 					)}
-					{item.views !== null && (
-						<span>{item.views.toLocaleString()} views</span>
-					)}
+					{item.views !== null && <span>{item.views.toLocaleString()} views</span>}
 				</div>
 			</Link>
 		</li>
