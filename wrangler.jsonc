@@ -1,0 +1,33 @@
+{
+	// Cloudflare Pages configuration for the Panelrift frontend.
+	//
+	// IMPORTANT: once this file exists it becomes the source of truth, and the
+	// dashboard's own Bindings and Variables settings for this project stop being
+	// applied. Check Settings -> Bindings / Variables in the dashboard and move
+	// anything already configured there into this file before the next deploy.
+	//
+	// `name` must match the existing Pages project, or a deploy creates a second one.
+	"name": "panelrift",
+	"pages_build_output_dir": "dist",
+	"compatibility_date": "2026-08-15",
+
+	/**
+	 * Service binding consumed by functions/api/[[path]].ts.
+	 *
+	 * `service` is the worker's `name` from ../manga-api/wrangler.jsonc. Dispatch
+	 * goes through Cloudflare's network rather than the worker's public hostname,
+	 * so that hostname can be turned off without breaking this app.
+	 */
+	"services": [{ "binding": "API", "service": "manhwa-api" }],
+
+	/**
+	 * Named environments do not inherit bindings from the top level, so preview
+	 * has to repeat it. Without this, /api/* returns 500 on every preview deploy
+	 * while production works fine.
+	 */
+	"env": {
+		"preview": {
+			"services": [{ "binding": "API", "service": "manhwa-api" }]
+		}
+	}
+}

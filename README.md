@@ -21,11 +21,10 @@ npm run dev                            # http://localhost:5173
 ```
 
 In dev, Vite proxies `/api/*` to `127.0.0.1:8787`, so the browser only ever talks to
-one origin and CORS never comes up. For a build, point at the deployed worker:
+one origin and CORS never comes up. A deploy keeps that same `/api` prefix, so leave
+`VITE_API_BASE_URL` unset in both cases:
 
 ```bash
-cp .env.example .env
-# VITE_API_BASE_URL=https://your-worker.example.workers.dev
 npm run build && npm run preview
 ```
 
@@ -36,6 +35,26 @@ npm run build && npm run preview
 | `npm run preview` | Serve the built bundle |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run check` | typecheck, then build |
+
+## How `/api` is served in production
+
+The browser never calls the worker directly. `functions/api/[[path]].ts` is a Pages
+Function that answers `/api/*` on this domain and forwards to the worker over the
+`API` service binding declared in `wrangler.jsonc`. Cloudflare dispatches that
+inside its own network, so the worker needs no public hostname at all — with
+`workers_dev` off it becomes unreachable except through this app, which no CORS
+allowlist can achieve on its own.
+
+Two things to keep in mind:
+
+- The binding has to exist for **both** Production and Preview. `wrangler.jsonc`
+  declares each explicitly, because named environments do not inherit bindings.
+- Adding `wrangler.jsonc` means the dashboard's own Bindings and Variables settings
+  for this project are ignored. Move anything configured there into the file.
+
+To exercise the Function locally instead of the Vite proxy, run
+`wrangler pages dev dist --service API=manhwa-api` with the worker running next to
+it, and drop the `rewrite` from the Vite proxy so the `/api` prefix survives.
 
 ## Routes
 

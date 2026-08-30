@@ -3,8 +3,12 @@
 import type { Chapter, ChapterList, Home, Manhwa, RankingPeriod, SearchResponse } from './types';
 
 /**
- * In dev this stays empty and vite proxies `/api` to the local worker. In a build
- * it points at the deployed worker, which serves `Access-Control-Allow-Origin`.
+ * Stays empty in both dev and production, so every request is same-origin under
+ * `/api`: vite proxies that to the local worker in dev, and the Pages Function at
+ * functions/api/[[path]].ts forwards it over a service binding in a deploy.
+ *
+ * Set VITE_API_BASE_URL only to talk to a deployed worker directly, which then
+ * has to allow this origin in its ALLOWED_ORIGINS list.
  */
 const BASE = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/+$/, '') || '/api';
 
