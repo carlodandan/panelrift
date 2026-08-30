@@ -52,7 +52,7 @@ function HeroSlide({
 				{/* Text block */}
 				<div className="min-w-0 flex-1">
 					{/* Rank badge */}
-					<span className="inline-flex items-center gap-1.5 rounded-full bg-accent-600/90 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white shadow">
+					<span className="inline-flex items-center gap-1.5 rounded-full bg-accent-600/90 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_0_12px_var(--color-accent-600)]">
 						<span>★</span> #{rank} Trending Today
 					</span>
 
@@ -85,7 +85,7 @@ function HeroSlide({
 						<Link
 							to={`/series/${encodeURIComponent(series.slug)}`}
 							tabIndex={active ? 0 : -1}
-							className="inline-flex items-center gap-2 rounded-lg bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:bg-accent-500 active:scale-95"
+							className="inline-flex items-center gap-2 rounded-lg bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_16px_var(--color-accent-600)] transition hover:bg-accent-500 hover:shadow-[0_0_24px_var(--color-accent-500)] active:scale-95"
 						>
 							▶ Start reading
 						</Link>
