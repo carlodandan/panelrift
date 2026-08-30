@@ -135,7 +135,7 @@ function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
 	return (
 		<section
 			className="hero-breakout relative overflow-hidden bg-ink-900"
-			style={{ minHeight: '22rem' }}
+			style={{ minHeight: '28rem' }}
 			onMouseEnter={() => { paused.current = true; }}
 			onMouseLeave={() => { paused.current = false; }}
 			onFocus={() => { paused.current = true; }}
