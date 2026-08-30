@@ -89,7 +89,7 @@ export function formatUpstreamAge(value: string | null): string | null {
 	const trimmed = value.trim();
 	if (!trimmed) return null;
 	if (/\b(ago|just now|yesterday|today)\b/i.test(trimmed)) return trimmed;
-	return /\d/.test(trimmed) ? `${trimmed} ago` : trimmed;
+	return /\d/.test(trimmed) ? `Last Updated: ${trimmed}` : trimmed;
 }
 
 /**
