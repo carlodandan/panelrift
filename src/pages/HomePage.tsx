@@ -44,35 +44,35 @@ function HeroSlide({
 					eager={rank === 1}
 				/>
 			</div>
-			{/* Left-to-right gradient overlay so text is always readable */}
-			<div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/50 to-ink-950/10" />
+			{/* Gradient overlay - fades from bottom on mobile, from left on desktop */}
+			<div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-ink-950/90 via-ink-950/50 to-ink-950/10" />
 			{/* Bottom fade for dots */}
 			<div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink-950/80 to-transparent" />
 
-			{/* Content — re-constrained inside the bleed */}
-			<div className="relative mx-auto flex h-full max-w-7xl flex-col gap-6 px-4 py-8 sm:flex-row sm:items-center sm:px-6 sm:py-10 lg:px-8">
+			{/* Content - re-constrained inside the bleed */}
+			<div className="relative mx-auto flex h-full max-w-7xl flex-col items-center gap-6 px-4 pb-12 pt-8 sm:flex-row sm:px-6 sm:py-10 lg:px-8">
 				{/* Cover art */}
 				<CoverImage
 					src={series.cover_url}
 					alt={series.title}
 					eager={rank === 1}
-					className="aspect-2/3 w-32 shrink-0 rounded-xl shadow-2xl ring-1 ring-white/10 sm:w-44 lg:w-52"
+					className="aspect-2/3 w-40 shrink-0 rounded-xl shadow-2xl ring-1 ring-white/10 sm:w-52 lg:w-64"
 				/>
 
 				{/* Text block */}
-				<div className="min-w-0 flex-1">
+				<div className="min-w-0 flex-1 flex flex-col items-center text-center sm:items-start sm:text-left">
 					{/* Rank badge */}
 					<span className="inline-flex items-center gap-1.5 rounded-full bg-accent-600/90 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_0_12px_var(--color-accent-600)]">
 						<span>★</span> #{rank} Trending Today
 					</span>
 
 					{/* Title */}
-					<h1 className="mt-3 text-2xl font-extrabold leading-tight text-white drop-shadow sm:text-3xl lg:text-4xl">
+					<h1 className="mt-3 text-xl font-extrabold leading-tight text-white drop-shadow sm:text-3xl lg:text-4xl">
 						{series.title}
 					</h1>
 
 					{/* Meta pills */}
-					<div className="mt-3 flex flex-wrap items-center gap-2">
+					<div className="mt-3 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
 						{series.latest_chapter && (
 							<span className="flex items-center gap-1 rounded-md bg-ink-800/80 px-2.5 py-1 text-xs font-medium text-ink-200 backdrop-blur-sm">
 								Ch. {formatChapterNumber(series.latest_chapter)}
@@ -91,7 +91,7 @@ function HeroSlide({
 					</div>
 
 					{/* CTA buttons */}
-					<div className="mt-5 flex flex-wrap gap-3">
+					<div className="mt-5 flex flex-wrap justify-center gap-3 sm:justify-start">
 						<Link
 							to={`/series/${encodeURIComponent(series.slug)}`}
 							tabIndex={active ? 0 : -1}
@@ -152,8 +152,7 @@ function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
 
 	return (
 		<section
-			className="hero-breakout relative overflow-hidden bg-ink-900"
-			style={{ minHeight: '28rem' }}
+			className="hero-breakout relative min-h-[34rem] overflow-hidden bg-ink-900 sm:min-h-[28rem]"
 			onMouseEnter={() => {
 				paused.current = true;
 			}}
@@ -174,10 +173,10 @@ function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
 				<HeroSlide key={series.slug} series={series} rank={i + 1} active={i === current} />
 			))}
 
-			{/* Dot navigation — middle bottom */}
+			{/* Dot navigation - middle bottom */}
 			{total > 1 && (
 				<div
-					className="absolute inset-x-0 bottom-4 flex justify-center gap-2"
+					className="absolute inset-x-0 bottom-3 flex justify-center gap-2 sm:bottom-4"
 					role="tablist"
 					aria-label="Slides"
 				>

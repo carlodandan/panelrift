@@ -83,9 +83,9 @@ export function Layout() {
 			<footer className="border-t border-ink-800 bg-ink-900/60">
 				<div className="mx-auto max-w-7xl px-4 py-12">
 					{/* Top grid: brand + nav columns */}
-					<div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+					<div className="grid gap-10 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-3">
 						{/* Brand */}
-						<div className="space-y-4">
+						<div className="flex flex-col items-center space-y-4 sm:items-start">
 							<Link to="/" className="inline-flex items-center gap-2" aria-label="Panelrift home">
 								<img
 									src="/icons/android-icon-192x192.png"
@@ -97,7 +97,7 @@ export function Layout() {
 							</Link>
 							<p className="max-w-xs text-sm leading-relaxed text-ink-400">
 								A fast, clean reader for manhwa and webtoons. Rankings, search, and a
-								distraction-free vertical reader — all fetched live, nothing stored on our end.
+								distraction-free vertical reader - all fetched live, nothing stored on our end.
 							</p>
 						</div>
 
@@ -153,7 +153,7 @@ export function Layout() {
 					</div>
 
 					{/* Bottom bar */}
-					<div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-ink-800 pt-6 sm:flex-row">
+					<div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-ink-800 pt-6 text-center sm:flex-row sm:text-left">
 						<p className="text-xs text-ink-400">
 							© {new Date().getFullYear()} Panelrift. For personal use only.
 						</p>
