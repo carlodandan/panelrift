@@ -1,6 +1,6 @@
 # Panelrift
 
-A manhwa reading site built on [`manhwa-api`](../manga-api). React + Vite + Tailwind,
+A manhwa reading site built on [`manhwa-api`](https://github.com/carlodandan/manhwa-api). React + Vite + Tailwind,
 deployable as static files anywhere.
 
 It is an original interface rather than a copy of any existing site's design: the
