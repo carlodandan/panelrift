@@ -23,7 +23,7 @@ export default defineConfig({
 			},
 		}),
 		Sitemap({
-			hostname: 'https://panelrift.pages.dev',
+			hostname: 'https://panelrift.eu.cc',
 			dynamicRoutes: ['/', '/rankings', '/search'],
 			readable: true,
 			robots: [
