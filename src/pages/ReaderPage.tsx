@@ -38,6 +38,25 @@ function readStoredWidth(): WidthKey {
 function Page({ src, index, total }: { src: string; index: number; total: number }) {
 	const [attempt, setAttempt] = useState(0);
 	const [failed, setFailed] = useState(false);
+	const [inView, setInView] = useState(index < 2);
+	const ref = useRef<HTMLDivElement>(null);
+
+	// Load images when they come within a generous margin of the viewport.
+	// This prevents all 0-height images from loading instantly at once.
+	useEffect(() => {
+		if (inView) return;
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting) {
+					setInView(true);
+					observer.disconnect();
+				}
+			},
+			{ rootMargin: '2000px 0px' } // Pre-load quite early so readers don't hit blanks
+		);
+		if (ref.current) observer.observe(ref.current);
+		return () => observer.disconnect();
+	}, [inView]);
 
 	if (failed) {
 		return (
@@ -59,14 +78,18 @@ function Page({ src, index, total }: { src: string; index: number; total: number
 		);
 	}
 
+	if (!inView) {
+		// Placeholder with aspect ratio to ensure native lazy loading/scroll positions aren't broken.
+		return <div ref={ref} className="aspect-2/3 w-full bg-ink-900" />;
+	}
+
 	return (
 		<img
 			// Changing the key on retry forces a fresh request rather than a cached failure.
 			key={attempt}
 			src={src}
 			alt={`Page ${index + 1} of ${total}`}
-			// The first two pages are what the reader is looking at; the rest can wait.
-			loading={index < 2 ? 'eager' : 'lazy'}
+			loading="eager" // We handle lazy loading manually via IntersectionObserver
 			decoding="async"
 			referrerPolicy="no-referrer"
 			onError={() => setFailed(true)}
