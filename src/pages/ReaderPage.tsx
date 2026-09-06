@@ -52,7 +52,7 @@ function Page({ src, index, total }: { src: string; index: number; total: number
 					observer.disconnect();
 				}
 			},
-			{ rootMargin: '2000px 0px' } // Pre-load quite early so readers don't hit blanks
+			{ rootMargin: '2000px 0px' }, // Pre-load quite early so readers don't hit blanks
 		);
 		if (ref.current) observer.observe(ref.current);
 		return () => observer.disconnect();
