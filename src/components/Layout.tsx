@@ -159,7 +159,7 @@ export function Layout() {
 							© {new Date().getFullYear()} Panelrift. For personal use only.
 						</p>
 						<p className="text-xs text-ink-400">
-							Built using <span className="font-mono text-ink-200">manhwa-api</span>
+							Built using <span className="font-mono text-ink-200">panelrift-api</span>
 						</p>
 					</div>
 				</div>
