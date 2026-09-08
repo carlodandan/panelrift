@@ -7,6 +7,7 @@ import { SeriesPage } from './pages/SeriesPage';
 import { ReaderPage } from './pages/ReaderPage';
 import { LibraryPage } from './pages/LibraryPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { BrowsePage } from './pages/BrowsePage';
 
 /**
  * The reader sits outside `Layout` deliberately: the site header, footer and page
@@ -17,6 +18,7 @@ export function App() {
 		<Routes>
 			<Route element={<Layout />}>
 				<Route path="/" element={<HomePage />} />
+				<Route path="/browse" element={<BrowsePage />} />
 				<Route path="/rankings" element={<RankingsPage />} />
 				<Route path="/search" element={<SearchPage />} />
 				<Route path="/series/:slug" element={<SeriesPage />} />

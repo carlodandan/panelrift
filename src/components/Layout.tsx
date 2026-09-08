@@ -4,7 +4,8 @@ import { SearchBar } from './SearchBar';
 import { cn } from '../lib/cn';
 
 const NAV = [
-	{ to: '/', label: 'Browse' },
+	{ to: '/', label: 'Home' },
+	{ to: '/browse', label: 'Browse' },
 	{ to: '/rankings', label: 'Rankings' },
 	{ to: '/library', label: 'Library' },
 ];

@@ -91,7 +91,7 @@ export interface ApiErrorBody {
 	error: { code: string; message: string };
 }
 
-export interface RecentlyAddedItem {
+export interface BrowseEntry {
 	title: string;
 	slug: string;
 	cover_url: string | null;
@@ -101,11 +101,20 @@ export interface RecentlyAddedItem {
 	badge: string | null;
 }
 
-export interface RecentlyAddedResponse {
+export interface BrowseList {
 	sort: string;
 	page: number;
 	count: number;
-	total: number;
-	total_pages: number;
-	results: RecentlyAddedItem[];
+	total: number | null;
+	total_pages: number | null;
+	results: BrowseEntry[];
+}
+
+export interface BrowseQuery {
+	page: number;
+	sort?: string;
+	include_genres?: string;
+	exclude_genres?: string;
+	status?: string;
+	type?: string;
 }

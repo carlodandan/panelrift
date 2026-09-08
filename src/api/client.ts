@@ -4,7 +4,8 @@ import type {
 	Home,
 	Manhwa,
 	RankingPeriod,
-	RecentlyAddedResponse,
+	BrowseList,
+	BrowseQuery,
 	SearchResponse,
 } from './types';
 
@@ -85,5 +86,16 @@ export const api = {
 		request<Chapter>(`/v1/chapters/${encodeURIComponent(chapterId)}`, signal),
 
 	recentlyAdded: (page = 1, signal?: AbortSignal) =>
-		request<RecentlyAddedResponse>(`/v1/recently_added?page=${page}`, signal),
+		request<BrowseList>(`/v1/recently_added?page=${page}`, signal),
+
+	browse: (query: BrowseQuery, signal?: AbortSignal) => {
+		const params = new URLSearchParams();
+		params.set('page', query.page.toString());
+		if (query.sort) params.set('sort', query.sort);
+		if (query.include_genres) params.set('include_genres', query.include_genres);
+		if (query.exclude_genres) params.set('exclude_genres', query.exclude_genres);
+		if (query.status) params.set('status', query.status);
+		if (query.type) params.set('type', query.type);
+		return request<BrowseList>(`/v1/browse?${params.toString()}`, signal);
+	},
 };

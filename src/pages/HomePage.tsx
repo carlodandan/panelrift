@@ -6,8 +6,8 @@ import {
 	type Home,
 	type ManhwaSummary,
 	type Period,
-	type RecentlyAddedItem,
-	type RecentlyAddedResponse,
+	type BrowseEntry,
+	type BrowseList,
 } from '../api/types';
 import { useResource } from '../hooks/useResource';
 import { useProgress } from '../hooks/useLibrary';
@@ -267,7 +267,7 @@ function ContinueReading() {
 
 export function HomePage() {
 	const home = useResource<Home>((signal) => api.home(signal), []);
-	const recent = useResource<RecentlyAddedResponse>((signal) => api.recentlyAdded(1, signal), []);
+	const recent = useResource<BrowseList>((signal) => api.recentlyAdded(1, signal), []);
 
 	if (home.loading) {
 		return (
@@ -336,50 +336,43 @@ export function HomePage() {
 // ---------------------------------------------------------------------------
 
 /** A single card in the Recently Added rail. */
-function RecentlyAddedCard({ item }: { item: RecentlyAddedItem }) {
+function RecentlyAddedCard({ item }: { item: BrowseEntry }) {
 	return (
 		<li className="w-36 shrink-0 snap-start sm:w-40">
 			<Link
 				to={`/series/${encodeURIComponent(item.slug)}`}
 				className="group block focus:outline-none"
 			>
-				<div className="relative">
+				<div className="relative overflow-hidden rounded-card bg-ink-850 ring-1 ring-ink-700 transition group-hover:ring-accent-500 group-focus-visible:ring-accent-400">
 					<CoverImage
 						src={item.cover_url}
 						alt={item.title}
-						className="aspect-2/3 w-full rounded-lg ring-1 ring-ink-700 transition group-hover:ring-accent-500"
+						className="aspect-2/3 w-full transition duration-300 group-hover:scale-[1.03]"
 					/>
+
 					{item.badge && (
-						<span className="absolute left-1.5 top-1.5 rounded-sm bg-accent-600/90 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white backdrop-blur-sm">
+						<span className="absolute left-2 top-2 rounded-md bg-accent-600/90 px-2 py-0.5 text-xs font-bold tabular-nums text-white backdrop-blur-sm">
 							{item.badge}
 						</span>
 					)}
-				</div>
-				<p className="mt-2 line-clamp-2 text-xs leading-snug text-ink-200 group-hover:text-accent-400">
-					{item.title}
-				</p>
-				{item.description && (
-					<p className="mt-1 line-clamp-2 text-[11px] leading-snug text-ink-400">
-						{item.description}
-					</p>
-				)}
-				<div className="mt-1 flex items-center gap-2 text-[11px] text-ink-400">
+
 					{item.rating !== null && (
-						<span className="text-amber-300">★ {formatRating(item.rating)}</span>
+						<span className="absolute right-2 top-2 rounded-md bg-ink-950/75 px-1.5 py-0.5 text-xs font-medium text-amber-300 backdrop-blur-sm">
+							★ {formatRating(item.rating)}
+						</span>
 					)}
-					{item.views !== null && <span>{item.views.toLocaleString()} views</span>}
 				</div>
+
+				<h3 className="mt-2 line-clamp-2 text-sm font-medium leading-snug text-ink-100 transition group-hover:text-accent-400">
+					{item.title}
+				</h3>
 			</Link>
 		</li>
 	);
 }
 
 /** Horizontally scrolling "Recently Added" rail, fetched independently of /v1/home. */
-function RecentlyAdded({
-	resource,
-}: {
-	resource: ReturnType<typeof useResource<RecentlyAddedResponse>>;
-}) {
+function RecentlyAdded({ resource }: { resource: ReturnType<typeof useResource<BrowseList>> }) {
 	if (resource.error) return null; // fail silently — it's a bonus section
 
 	return (
