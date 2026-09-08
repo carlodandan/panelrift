@@ -10,6 +10,9 @@
 	"name": "panelrift",
 	"pages_build_output_dir": "dist",
 	"compatibility_date": "2026-08-15",
+	"observability": {
+			"enabled": true
+		},
 
 	/**
 	 * Service binding consumed by functions/api/[[path]].ts.
