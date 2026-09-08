@@ -21,7 +21,7 @@
 	 * goes through Cloudflare's network rather than the worker's public hostname,
 	 * so that hostname can be turned off without breaking this app.
 	 */
-	"services": [{ "binding": "API", "service": "manhwa-api" }],
+	"services": [{ "binding": "API", "service": "panelrift-api" }],
 
 	/**
 	 * The worker also requires a shared secret, which is not declared here because
