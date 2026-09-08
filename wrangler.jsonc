@@ -42,7 +42,7 @@
 	 */
 	"env": {
 		"preview": {
-			"services": [{ "binding": "API", "service": "manhwa-api" }]
+			"services": [{ "binding": "API", "service": "panelrift-api" }]
 		}
 	}
 }
