@@ -6,6 +6,11 @@ declare global {
 
 export function trackEvent(eventName: string, eventParams?: Record<string, any>) {
 	if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-		window.gtag('event', eventName, eventParams);
+		const params = {
+			event_category: 'engagement',
+			...eventParams,
+		};
+		console.log(`[Analytics] Sending event: ${eventName}`, params);
+		window.gtag('event', eventName, params);
 	}
 }
