@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { trackEvent } from '../lib/analytics';
 import { api } from '../api/client';
 import { PERIODS, PERIOD_LABELS, type Period, type RankingPeriod } from '../api/types';
 import { useResource } from '../hooks/useResource';
@@ -12,6 +14,10 @@ function isPeriod(value: string | null): value is Period {
 }
 
 export function RankingsPage() {
+	useEffect(() => {
+		trackEvent('open_rankings');
+	}, []);
+
 	const [params, setParams] = useSearchParams();
 	const raw = params.get('period');
 	// An unknown ?period= would earn a 400 from the API, so normalise before asking.

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { ManhwaSummary } from '../api/types';
+import { trackEvent } from '../lib/analytics';
 
 /**
  * Bookmarks and reading position, persisted in localStorage.
@@ -86,8 +87,16 @@ export function useBookmarks() {
 	const toggle = useCallback(
 		(entry: Omit<BookmarkEntry, 'saved_at'>) => {
 			const next = { ...bookmarks };
-			if (entry.slug in next) delete next[entry.slug];
-			else next[entry.slug] = { ...entry, saved_at: Date.now() };
+			if (entry.slug in next) {
+				delete next[entry.slug];
+			} else {
+				next[entry.slug] = { ...entry, saved_at: Date.now() };
+				trackEvent('add_to_library', {
+					content_id: entry.slug,
+					content_type: 'manhwa',
+					title: entry.title,
+				});
+			}
 			commit(next);
 		},
 		[bookmarks, commit],

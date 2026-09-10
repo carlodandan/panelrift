@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { trackEvent } from '../lib/analytics';
 import { api } from '../api/client';
 import type { BrowseQuery } from '../api/types';
 import { useResource } from '../hooks/useResource';
@@ -69,6 +71,10 @@ const TYPES = [
 ];
 
 export function BrowsePage() {
+	useEffect(() => {
+		trackEvent('open_browse');
+	}, []);
+
 	const [params, setParams] = useSearchParams();
 	const page = Number(params.get('page')) || 1;
 	const sort = params.get('sort') || 'recently_added';

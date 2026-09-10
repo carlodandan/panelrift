@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { trackEvent } from '../lib/analytics';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api/client';
 import type { ChapterList, Manhwa } from '../api/types';
@@ -117,6 +118,13 @@ function Chapters({ slug, lastRead }: { slug: string; lastRead: string | undefin
 
 export function SeriesPage() {
 	const { slug = '' } = useParams();
+
+	useEffect(() => {
+		if (slug) {
+			trackEvent('open_title', { content_id: slug });
+		}
+	}, [slug]);
+
 	const series = useResource<Manhwa>((signal) => api.manhwa(slug, signal), [slug]);
 	const { forSlug } = useProgress();
 	const [expanded, setExpanded] = useState(false);
