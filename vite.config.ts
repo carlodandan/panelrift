@@ -24,7 +24,28 @@ export default defineConfig({
 		}),
 		Sitemap({
 			hostname: 'https://panelrift.eu.cc',
-			dynamicRoutes: ['/', '/rankings', '/search'],
+			dynamicRoutes: [
+				{
+					path: '/',
+					priority: 1.0,
+				},
+				{
+					path: '/browse',
+					priority: 0.8,
+				},
+				{
+					path: '/rankings',
+					priority: 0.7,
+				},
+				{
+					path: '/search',
+					priority: 0.6,
+				},
+				{
+					path: '/library',
+					priority: 0.5,
+				},
+			],
 			readable: true,
 			robots: [
 				{
