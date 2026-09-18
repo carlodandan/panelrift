@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { trackEvent } from '../lib/analytics';
+import { useSEO } from '../hooks/useSEO';
 import { api } from '../api/client';
 import type { BrowseQuery } from '../api/types';
 import { useResource } from '../hooks/useResource';
@@ -71,11 +72,32 @@ const TYPES = [
 ];
 
 export function BrowsePage() {
+	useSEO({
+		title: 'Browse Manhwa & Webtoons — Filter by Genre, Status & Type',
+		description:
+			'Browse thousands of manhwa, webtoons, and manga. Filter by action, romance, fantasy, ongoing or completed status, and ratings on Panelrift.',
+		canonicalUrl: 'https://panelrift.eu.cc/browse',
+		jsonLd: {
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://panelrift.eu.cc/' },
+				{
+					'@type': 'ListItem',
+					position: 2,
+					name: 'Browse',
+					item: 'https://panelrift.eu.cc/browse',
+				},
+			],
+		},
+	});
+
 	useEffect(() => {
 		trackEvent('open_browse');
 	}, []);
 
 	const [params, setParams] = useSearchParams();
+	const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 	const page = Number(params.get('page')) || 1;
 	const sort = params.get('sort') || 'recently_added';
 	const status = params.get('status') || '';
@@ -132,145 +154,178 @@ export function BrowsePage() {
 		});
 	};
 
+	const activeFilterCount =
+		includeGenres.length + excludeGenres.length + (status ? 1 : 0) + (type ? 1 : 0);
+
 	return (
-		<div className="flex flex-col md:flex-row gap-8 items-start">
-			{/* Filters Sidebar */}
-			<aside className="w-full md:w-72 shrink-0 space-y-8 bg-ink-900/50 p-6 rounded-card border border-ink-800">
-				<div>
-					<h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-300">
-						Sort By
-					</h3>
-					<select
-						value={sort}
-						onChange={(e) => updateFilter({ sort: e.target.value })}
-						className="w-full rounded-md bg-ink-950 border border-ink-700 px-3 py-2 text-sm text-ink-100 focus:outline-none focus:ring-2 focus:ring-accent-600 transition"
-					>
-						{SORTS.map((s) => (
-							<option key={s.value} value={s.value}>
-								{s.label}
-							</option>
-						))}
-					</select>
-				</div>
-				<div>
-					<h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-300">Type</h3>
-					<select
-						value={type}
-						onChange={(e) => updateFilter({ type: e.target.value })}
-						className="w-full rounded-md bg-ink-950 border border-ink-700 px-3 py-2 text-sm text-ink-100 focus:outline-none focus:ring-2 focus:ring-accent-600 transition"
-					>
-						{TYPES.map((t) => (
-							<option key={t.value} value={t.value}>
-								{t.label}
-							</option>
-						))}
-					</select>
-				</div>
-				<div>
-					<h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-300">
-						Status
-					</h3>
-					<select
-						value={status}
-						onChange={(e) => updateFilter({ status: e.target.value })}
-						className="w-full rounded-md bg-ink-950 border border-ink-700 px-3 py-2 text-sm text-ink-100 focus:outline-none focus:ring-2 focus:ring-accent-600 transition"
-					>
-						{STATUSES.map((s) => (
-							<option key={s.value} value={s.value}>
-								{s.label}
-							</option>
-						))}
-					</select>
-				</div>
-				<div>
-					<h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-300">
-						Genres
-					</h3>
-					<div className="flex flex-wrap gap-2">
-						{GENRES.map((g) => {
-							const isInc = includeGenres.includes(g);
-							const isExc = excludeGenres.includes(g);
-							return (
-								<button
-									key={g}
-									onClick={() => {
-										if (isInc) toggleGenre(g, 'exclude');
-										else if (isExc) toggleGenre(g, 'none');
-										else toggleGenre(g, 'include');
-									}}
-									className={cn(
-										'rounded-md px-2.5 py-1 text-xs font-medium transition select-none',
-										isInc
-											? 'bg-accent-600 text-white'
-											: isExc
-												? 'bg-red-900/60 text-red-100 ring-1 ring-red-800'
-												: 'bg-ink-800 text-ink-300 hover:bg-ink-700 hover:text-ink-100',
-									)}
-								>
-									{isExc ? '− ' : isInc ? '+ ' : ''}
-									{g}
-								</button>
-							);
-						})}
-					</div>
-					<div className="mt-4 text-xs text-ink-400">
-						Tap to include (+), tap again to exclude (−), tap again to clear.
-					</div>
-				</div>
+		<div className="space-y-6">
+			<div className="flex flex-col gap-2">
+				<h1 className="text-2xl font-bold text-ink-100 sm:text-3xl">Browse Manhwa & Webtoons</h1>
+				<p className="text-sm text-ink-400">
+					Filter through our catalog by genre, release status, rating, and format.
+				</p>
+			</div>
 
+			{/* Mobile filter toggle */}
+			<div className="md:hidden">
 				<button
-					onClick={() => {
-						setParams(new URLSearchParams());
-					}}
-					className="w-full rounded-md bg-ink-800 px-3 py-2 text-sm font-medium text-ink-200 hover:bg-ink-700 hover:text-ink-100 transition"
+					type="button"
+					onClick={() => setMobileFiltersOpen((open) => !open)}
+					className="flex w-full items-center justify-between rounded-md border border-ink-700 bg-ink-900 px-4 py-2.5 text-sm font-medium text-ink-200 hover:bg-ink-850"
 				>
-					Reset Filters
+					<span>Filters {activeFilterCount > 0 ? `(${activeFilterCount} active)` : ''}</span>
+					<span className="text-xs text-accent-400">{mobileFiltersOpen ? '▲ Hide' : '▼ Show'}</span>
 				</button>
-			</aside>
+			</div>
 
-			{/* Main Content */}
-			<section className="flex-1 min-w-0 space-y-6">
-				{results.loading && <CardGridSkeleton count={24} />}
-				{results.error && <ErrorState error={results.error} onRetry={results.reload} />}
+			<div className="flex flex-col md:flex-row gap-8 items-start">
+				{/* Filters Sidebar */}
+				<aside
+					className={cn(
+						'w-full md:w-72 shrink-0 space-y-8 bg-ink-900/50 p-6 rounded-card border border-ink-800',
+						!mobileFiltersOpen && 'hidden md:block',
+					)}
+				>
+					<h2 className="sr-only">Filter options</h2>
+					<div>
+						<h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-300">
+							Sort By
+						</h3>
+						<select
+							value={sort}
+							onChange={(e) => updateFilter({ sort: e.target.value })}
+							className="w-full rounded-md bg-ink-950 border border-ink-700 px-3 py-2 text-sm text-ink-100 focus:outline-none focus:ring-2 focus:ring-accent-600 transition"
+						>
+							{SORTS.map((s) => (
+								<option key={s.value} value={s.value}>
+									{s.label}
+								</option>
+							))}
+						</select>
+					</div>
+					<div>
+						<h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-300">
+							Type
+						</h3>
+						<select
+							value={type}
+							onChange={(e) => updateFilter({ type: e.target.value })}
+							className="w-full rounded-md bg-ink-950 border border-ink-700 px-3 py-2 text-sm text-ink-100 focus:outline-none focus:ring-2 focus:ring-accent-600 transition"
+						>
+							{TYPES.map((t) => (
+								<option key={t.value} value={t.value}>
+									{t.label}
+								</option>
+							))}
+						</select>
+					</div>
+					<div>
+						<h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-300">
+							Status
+						</h3>
+						<select
+							value={status}
+							onChange={(e) => updateFilter({ status: e.target.value })}
+							className="w-full rounded-md bg-ink-950 border border-ink-700 px-3 py-2 text-sm text-ink-100 focus:outline-none focus:ring-2 focus:ring-accent-600 transition"
+						>
+							{STATUSES.map((s) => (
+								<option key={s.value} value={s.value}>
+									{s.label}
+								</option>
+							))}
+						</select>
+					</div>
+					<div>
+						<h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-ink-300">
+							Genres
+						</h3>
+						<div className="flex flex-wrap gap-2">
+							{GENRES.map((g) => {
+								const isInc = includeGenres.includes(g);
+								const isExc = excludeGenres.includes(g);
+								return (
+									<button
+										key={g}
+										onClick={() => {
+											if (isInc) toggleGenre(g, 'exclude');
+											else if (isExc) toggleGenre(g, 'none');
+											else toggleGenre(g, 'include');
+										}}
+										className={cn(
+											'rounded-md px-2.5 py-1 text-xs font-medium transition select-none',
+											isInc
+												? 'bg-accent-600 text-white'
+												: isExc
+													? 'bg-red-900/60 text-red-100 ring-1 ring-red-800'
+													: 'bg-ink-800 text-ink-300 hover:bg-ink-700 hover:text-ink-100',
+										)}
+									>
+										{isExc ? '− ' : isInc ? '+ ' : ''}
+										{g}
+									</button>
+								);
+							})}
+						</div>
+						<div className="mt-4 text-xs text-ink-400">
+							Tap to include (+), tap again to exclude (−), tap again to clear.
+						</div>
+					</div>
 
-				{!results.loading && !results.error && results.data && (
-					<>
-						{results.data.results.length === 0 ? (
-							<div className="py-20 text-center text-ink-400">
-								<p className="text-lg mb-2">No series found.</p>
-								<p className="text-sm">Try loosening your filters.</p>
-							</div>
-						) : (
-							<SeriesGrid
-								items={results.data.results.map((r) => ({
-									title: r.title,
-									slug: r.slug,
-									cover_url: r.cover_url,
-									rating: r.rating,
-									latest_chapter: null,
-									last_updated: null,
-								}))}
-							/>
-						)}
+					<button
+						onClick={() => {
+							setParams(new URLSearchParams());
+						}}
+						className="w-full rounded-md bg-ink-800 px-3 py-2 text-sm font-medium text-ink-200 hover:bg-ink-700 hover:text-ink-100 transition"
+					>
+						Reset Filters
+					</button>
+				</aside>
 
-						{results.data.total_pages && results.data.total_pages > 1 ? (
-							<div className="pt-8 flex justify-center">
-								<Pagination
-									page={results.data.page}
-									total={results.data.total_pages * 24}
-									perPage={24}
-									onChange={(p) => {
-										const next = new URLSearchParams(params);
-										next.set('page', p.toString());
-										setParams(next);
-										window.scrollTo({ top: 0, behavior: 'smooth' });
-									}}
+				{/* Main Content */}
+				<section className="flex-1 min-w-0 space-y-6">
+					<h2 className="sr-only">Series catalog</h2>
+					{results.loading && <CardGridSkeleton count={24} />}
+					{results.error && <ErrorState error={results.error} onRetry={results.reload} />}
+
+					{!results.loading && !results.error && results.data && (
+						<>
+							{results.data.results.length === 0 ? (
+								<div className="py-20 text-center text-ink-400">
+									<p className="text-lg mb-2">No series found.</p>
+									<p className="text-sm">Try loosening your filters.</p>
+								</div>
+							) : (
+								<SeriesGrid
+									items={results.data.results.map((r) => ({
+										title: r.title,
+										slug: r.slug,
+										cover_url: r.cover_url,
+										rating: r.rating,
+										latest_chapter: null,
+										last_updated: null,
+									}))}
 								/>
-							</div>
-						) : null}
-					</>
-				)}
-			</section>
+							)}
+
+							{results.data.total_pages && results.data.total_pages > 1 ? (
+								<div className="pt-8 flex justify-center">
+									<Pagination
+										page={results.data.page}
+										total={results.data.total_pages * 24}
+										perPage={24}
+										onChange={(p) => {
+											const next = new URLSearchParams(params);
+											next.set('page', p.toString());
+											setParams(next);
+											window.scrollTo({ top: 0, behavior: 'smooth' });
+										}}
+									/>
+								</div>
+							) : null}
+						</>
+					)}
+				</section>
+			</div>
 		</div>
 	);
 }

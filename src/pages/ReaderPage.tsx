@@ -4,6 +4,7 @@ import { api } from '../api/client';
 import type { Chapter } from '../api/types';
 import { useResource } from '../hooks/useResource';
 import { useProgress } from '../hooks/useLibrary';
+import { useSEO } from '../hooks/useSEO';
 import { ErrorState } from '../components/ErrorState';
 import { Skeleton } from '../components/Skeleton';
 import { chapterNumberFromId, formatChapterNumber, titleFromSlug } from '../lib/format';
@@ -35,7 +36,19 @@ function readStoredWidth(): WidthKey {
  * of forcing the whole chapter to reload. `aspect-2/3` reserves space before the
  * image decodes, which stops the scroll position from jumping as pages stream in.
  */
-function Page({ src, index, total }: { src: string; index: number; total: number }) {
+function Page({
+	src,
+	index,
+	total,
+	seriesName,
+	chapterHeading,
+}: {
+	src: string;
+	index: number;
+	total: number;
+	seriesName?: string | null;
+	chapterHeading?: string;
+}) {
 	const [attempt, setAttempt] = useState(0);
 	const [failed, setFailed] = useState(false);
 	const [inView, setInView] = useState(index < 2);
@@ -83,12 +96,14 @@ function Page({ src, index, total }: { src: string; index: number; total: number
 		return <div ref={ref} className="aspect-2/3 w-full bg-ink-900" />;
 	}
 
+	const altText = `${seriesName ? `${seriesName} ` : ''}${chapterHeading ? `${chapterHeading} ` : ''}Page ${index + 1} of ${total}`;
+
 	return (
 		<img
 			// Changing the key on retry forces a fresh request rather than a cached failure.
 			key={attempt}
 			src={src}
-			alt={`Page ${index + 1} of ${total}`}
+			alt={altText}
 			loading="eager" // We handle lazy loading manually via IntersectionObserver
 			decoding="async"
 			referrerPolicy="no-referrer"
@@ -145,6 +160,45 @@ export function ReaderPage() {
 
 	const data = chapter.data;
 	const number = useMemo(() => chapterNumberFromId(chapterId), [chapterId]);
+
+	const seriesName =
+		data?.manhwa_title ?? (data?.manhwa_slug ? titleFromSlug(data.manhwa_slug) : null);
+	const heading = number
+		? `Chapter ${formatChapterNumber(number)}`
+		: (data?.chapter_title ?? 'Chapter');
+
+	useSEO({
+		title: data ? `${seriesName ?? 'Manhwa'} ${heading} — Read Online` : undefined,
+		description: data
+			? `Read ${seriesName ?? 'Manhwa'} ${heading} online for free in high-resolution vertical scroll format on Panelrift.`
+			: undefined,
+		canonicalUrl: `https://panelrift.eu.cc/read/${encodeURIComponent(chapterId)}`,
+		jsonLd: data
+			? {
+					'@context': 'https://schema.org',
+					'@type': 'BreadcrumbList',
+					itemListElement: [
+						{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://panelrift.eu.cc/' },
+						...(data.manhwa_slug
+							? [
+									{
+										'@type': 'ListItem',
+										position: 2,
+										name: seriesName ?? 'Series',
+										item: `https://panelrift.eu.cc/series/${encodeURIComponent(data.manhwa_slug)}`,
+									},
+								]
+							: []),
+						{
+							'@type': 'ListItem',
+							position: data.manhwa_slug ? 3 : 2,
+							name: heading,
+							item: `https://panelrift.eu.cc/read/${encodeURIComponent(chapterId)}`,
+						},
+					],
+				}
+			: undefined,
+	});
 
 	const goTo = useCallback(
 		(target: string | null) => {
@@ -236,12 +290,7 @@ export function ReaderPage() {
 		);
 	}
 
-	const seriesName =
-		data.manhwa_title ?? (data.manhwa_slug ? titleFromSlug(data.manhwa_slug) : null);
 	const seriesHref = data.manhwa_slug ? `/series/${encodeURIComponent(data.manhwa_slug)}` : '/';
-	const heading = number
-		? `Chapter ${formatChapterNumber(number)}`
-		: (data.chapter_title ?? 'Chapter');
 
 	return (
 		<div className="min-h-dvh bg-ink-950">
@@ -259,10 +308,10 @@ export function ReaderPage() {
 						← {seriesName ?? 'Series'}
 					</Link>
 
-					<span className="min-w-0 flex-1 truncate text-center text-sm font-medium text-ink-100">
-						{heading}
+					<h1 className="min-w-0 flex-1 truncate text-center text-sm font-medium text-ink-100">
+						<span>{heading}</span>
 						<span className="ml-2 text-xs text-ink-400">{data.page_count} pages</span>
-					</span>
+					</h1>
 
 					<div role="group" aria-label="Reading width" className="hidden shrink-0 gap-1 sm:flex">
 						{(Object.keys(WIDTHS) as WidthKey[]).map((key) => (
@@ -294,7 +343,14 @@ export function ReaderPage() {
 				) : (
 					<div className="flex flex-col">
 						{data.images.map((src, index) => (
-							<Page key={src} src={src} index={index} total={data.images.length} />
+							<Page
+								key={src}
+								src={src}
+								index={index}
+								total={data.images.length}
+								seriesName={seriesName}
+								chapterHeading={heading}
+							/>
 						))}
 					</div>
 				)}

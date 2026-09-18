@@ -79,6 +79,7 @@ side needs the secret locally: the worker skips the check when `PROXY_SECRET` is
 | Route | Page |
 | --- | --- |
 | `/` | Today's lead series, continue-reading, trending grid, weekly/monthly rails |
+| `/browse` | Filterable catalog by genre, type, release status, and custom sort order |
 | `/rankings?period=1d\|1w\|1m` | Full ranking for one period |
 | `/search?term=` | Debounced title search |
 | `/series/:slug` | Detail, genres, stats, paginated chapter list |
@@ -146,10 +147,19 @@ and `prefers-reduced-motion` honoured globally.
 src/
   api/        typed client + a mirror of the API's contract
   components/ Layout, SearchBar, SeriesCard, CoverImage, Pagination, Skeleton, ErrorState
-  hooks/      useResource (fetch + abort), useLibrary (bookmarks, progress)
-  lib/        formatters, class-name helper, shared constants
+  hooks/      useResource (fetch + abort), useLibrary (bookmarks, progress), useSEO (meta + schema)
+  lib/        formatters, class-name helper, shared constants, analytics
   pages/      one file per route
 ```
+
+## Documentation
+
+Comprehensive project documentation is available in the [`docs/`](docs/) directory:
+
+- [**Architecture & System Design**](docs/architecture.md): C4 diagrams, sequence data flow, proxy architecture, and performance models.
+- [**API & Data Client Reference**](docs/api.md): Endpoint specifications, query parameters, data models, error codes, and examples.
+- [**SEO, Structured Data & Analytics Guide**](docs/seo-and-analytics.md): Head management, JSON-LD schemas, Core Web Vitals, Google Analytics 4 events, and AI crawler setup (`llms.txt`).
+- [**Backlink Strategy Blueprint**](docs/backlink-strategy.md): Organic growth, developer case studies, community outreach, and linkable assets.
 
 Series metadata and artwork belong to their creators and publishers; this app only
 displays what the API returns and stores nothing server-side.

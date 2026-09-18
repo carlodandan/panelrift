@@ -1,9 +1,17 @@
 import { Link } from 'react-router-dom';
 import { useBookmarks, useProgress } from '../hooks/useLibrary';
+import { useSEO } from '../hooks/useSEO';
 import { CoverImage } from '../components/CoverImage';
 import { formatChapterNumber, formatRelative, titleFromSlug } from '../lib/format';
 
 export function LibraryPage() {
+	useSEO({
+		title: 'My Library — Saved Manhwa & Reading History',
+		description:
+			'View your bookmarked manhwa and continue reading where you left off. Stored locally in your browser on Panelrift.',
+		canonicalUrl: 'https://panelrift.eu.cc/library',
+	});
+
 	const { list, toggle } = useBookmarks();
 	const { recent, forSlug } = useProgress();
 
@@ -17,7 +25,7 @@ export function LibraryPage() {
 					clears the library too.
 				</p>
 				<Link
-					to="/"
+					to="/browse"
 					className="mt-6 inline-block rounded-md bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-500"
 				>
 					Browse series

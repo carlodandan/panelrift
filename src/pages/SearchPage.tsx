@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { api } from '../api/client';
 import type { SearchResponse } from '../api/types';
 import { useResource } from '../hooks/useResource';
+import { useSEO } from '../hooks/useSEO';
 import { SearchBar } from '../components/SearchBar';
 import { SeriesGrid } from '../components/SeriesCard';
 import { CardGridSkeleton } from '../components/Skeleton';
@@ -12,6 +13,14 @@ import { MIN_TERM, SEARCH_DEBOUNCE_MS } from '../lib/constants';
 export function SearchPage() {
 	const [params, setParams] = useSearchParams();
 	const urlTerm = params.get('term') ?? '';
+
+	useSEO({
+		title: urlTerm ? `Search results for "${urlTerm}"` : 'Search Manhwa & Webtoons',
+		description: urlTerm
+			? `Find manhwa, manga, and webtoons matching "${urlTerm}" on Panelrift.`
+			: 'Search through thousands of manhwa, webtoons, and manga titles on Panelrift.',
+		canonicalUrl: `https://panelrift.eu.cc/search${urlTerm ? `?term=${encodeURIComponent(urlTerm)}` : ''}`,
+	});
 
 	// Two terms on purpose: `typed` follows the keyboard, `term` follows the debounce
 	// and is what actually gets fetched. The search route is the tightest-limited one

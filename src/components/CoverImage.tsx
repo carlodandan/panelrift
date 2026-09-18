@@ -7,6 +7,7 @@ interface Props {
 	className?: string;
 	/** Covers below the fold should stay lazy; a hero cover should not. */
 	eager?: boolean;
+	fetchPriority?: 'high' | 'low';
 }
 
 /**
@@ -20,7 +21,7 @@ interface Props {
  * `referrerPolicy="no-referrer"` because image hosts commonly reject requests
  * carrying an unfamiliar Referer.
  */
-export function CoverImage({ src, alt, className, eager = false }: Props) {
+export function CoverImage({ src, alt, className, eager = false, fetchPriority }: Props) {
 	const [failed, setFailed] = useState(false);
 
 	if (src === null || failed) {
@@ -44,11 +45,14 @@ export function CoverImage({ src, alt, className, eager = false }: Props) {
 		);
 	}
 
+	const priority = fetchPriority ?? (eager ? 'high' : undefined);
+
 	return (
 		<img
 			src={src}
 			alt={alt}
 			loading={eager ? 'eager' : 'lazy'}
+			fetchPriority={priority}
 			decoding="async"
 			referrerPolicy="no-referrer"
 			onError={() => setFailed(true)}

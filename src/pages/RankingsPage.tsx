@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { trackEvent } from '../lib/analytics';
+import { useSEO } from '../hooks/useSEO';
 import { api } from '../api/client';
 import { PERIODS, PERIOD_LABELS, type Period, type RankingPeriod } from '../api/types';
 import { useResource } from '../hooks/useResource';
@@ -23,6 +24,25 @@ export function RankingsPage() {
 	// An unknown ?period= would earn a 400 from the API, so normalise before asking.
 	const period: Period = isPeriod(raw) ? raw : '1d';
 
+	useSEO({
+		title: `Top Manhwa Rankings (${PERIOD_LABELS[period]}) — Most Viewed`,
+		description: `Discover the most popular and top-ranked manhwa, webtoons, and manga for ${PERIOD_LABELS[period].toLowerCase()} on Panelrift. Ranked by live community views.`,
+		canonicalUrl: `https://panelrift.eu.cc/rankings${period !== '1d' ? `?period=${period}` : ''}`,
+		jsonLd: {
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://panelrift.eu.cc/' },
+				{
+					'@type': 'ListItem',
+					position: 2,
+					name: 'Rankings',
+					item: 'https://panelrift.eu.cc/rankings',
+				},
+			],
+		},
+	});
+
 	const ranking = useResource<RankingPeriod>((signal) => api.ranking(period, signal), [period]);
 
 	return (
@@ -33,6 +53,8 @@ export function RankingsPage() {
 					Ranked by upstream view counts over the selected window.
 				</p>
 			</div>
+
+			<h2 className="sr-only">Top manhwa rankings for {PERIOD_LABELS[period]}</h2>
 
 			<div
 				role="tablist"

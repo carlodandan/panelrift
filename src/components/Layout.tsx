@@ -15,9 +15,8 @@ function Logo() {
 		<Link to="/" className="flex shrink-0 items-center gap-2" aria-label="Panelrift, home">
 			<img
 				src="/icons/android-icon-192x192.png"
-				alt=""
+				alt="Panelrift Logo"
 				className="h-7 w-7 rounded-md object-cover"
-				aria-hidden="true"
 			/>
 			<span className="text-lg font-bold tracking-widest text-accent-400">PANELRIFT</span>
 		</Link>
@@ -84,15 +83,14 @@ export function Layout() {
 			<footer className="border-t border-ink-800 bg-ink-900/60">
 				<div className="mx-auto max-w-7xl px-4 py-12">
 					{/* Top grid: brand + nav columns */}
-					<div className="grid gap-10 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-3">
+					<div className="grid gap-10 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-4">
 						{/* Brand */}
 						<div className="flex flex-col items-center space-y-4 sm:items-start">
 							<Link to="/" className="inline-flex items-center gap-2" aria-label="Panelrift home">
 								<img
 									src="/icons/android-icon-192x192.png"
-									alt=""
+									alt="Panelrift Logo"
 									className="h-8 w-8 rounded-md object-cover"
-									aria-hidden="true"
 								/>
 								<span className="text-lg font-bold tracking-widest text-accent-400">PANELRIFT</span>
 							</Link>
@@ -104,9 +102,9 @@ export function Layout() {
 
 						{/* Navigate */}
 						<div className="space-y-4">
-							<h3 className="text-xs font-semibold uppercase tracking-widest text-ink-200">
+							<p className="text-xs font-semibold uppercase tracking-widest text-ink-200">
 								Navigate
-							</h3>
+							</p>
 							<ul className="space-y-2">
 								{NAV.map((item) => (
 									<li key={item.to}>
@@ -137,11 +135,30 @@ export function Layout() {
 							</ul>
 						</div>
 
+						{/* Top Genres */}
+						<div className="space-y-4">
+							<p className="text-xs font-semibold uppercase tracking-widest text-ink-200">
+								Popular Genres
+							</p>
+							<ul className="space-y-2">
+								{['Action', 'Fantasy', 'Romance', 'Isekai', 'Martial arts'].map((genre) => (
+									<li key={genre}>
+										<Link
+											to={`/browse?include_genres=${encodeURIComponent(genre)}`}
+											className="text-sm text-ink-400 transition hover:text-accent-400"
+										>
+											{genre} Manhwa
+										</Link>
+									</li>
+								))}
+							</ul>
+						</div>
+
 						{/* Disclaimer */}
 						<div className="space-y-4">
-							<h3 className="text-xs font-semibold uppercase tracking-widest text-ink-200">
+							<p className="text-xs font-semibold uppercase tracking-widest text-ink-200">
 								Disclaimer
-							</h3>
+							</p>
 							<p className="text-sm leading-relaxed text-ink-400">
 								Panelrift does not host or store any manga or manhwa content. All series metadata,
 								artwork, and chapters belong to their respective creators and publishers.

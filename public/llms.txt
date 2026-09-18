@@ -1,0 +1,20 @@
+# Panelrift
+
+> Fast, ad-free, vertical webtoon, manhwa, and manga reader web application.
+
+Panelrift provides a clean, high-performance web client for discovering, tracking, and reading manhwa and webtoons online. It features live daily, weekly, and monthly rankings, advanced full-text search with genre and status filters, and a seamless distraction-free vertical scroll reader.
+
+## Core Pages
+
+- [Home](https://panelrift.eu.cc/): Daily trending slideshow, recent chapters, continue reading, and weekly/monthly rankings.
+- [Browse](https://panelrift.eu.cc/browse): Filterable catalog by genres (Action, Fantasy, Romance, Isekai, etc.), release status (Ongoing, Completed, Hiatus), format (Manhwa, Manga, Manhua, Webtoon), and sort order.
+- [Rankings](https://panelrift.eu.cc/rankings): Community view rankings sorted by 24h (daily), 7d (weekly), and 30d (monthly) time windows.
+- [Search](https://panelrift.eu.cc/search): Instant debounced title search with live results.
+- [Library](https://panelrift.eu.cc/library): Private, browser-local bookmark manager and reading progress tracker.
+
+## Technical Architecture
+
+- Frontend: React 19 SPA, Tailwind CSS v4, Vite, Cloudflare Pages
+- Headless API: Panelrift API Worker (Cloudflare Workers)
+- Structured Data: Schema.org WebSite, Organization, Book, BreadcrumbList
+- Sitemap: https://panelrift.eu.cc/sitemap.xml

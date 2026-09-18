@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { trackEvent } from '../lib/analytics';
+import { useSEO } from '../hooks/useSEO';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api/client';
 import type { ChapterList, Manhwa } from '../api/types';
@@ -126,8 +127,69 @@ export function SeriesPage() {
 	}, [slug]);
 
 	const series = useResource<Manhwa>((signal) => api.manhwa(slug, signal), [slug]);
+	const currentData = series.data;
 	const { forSlug } = useProgress();
 	const [expanded, setExpanded] = useState(false);
+
+	useSEO({
+		title: currentData ? `${currentData.title} — Read Manhwa Online` : undefined,
+		description: currentData
+			? currentData.description
+				? currentData.description.slice(0, 155).trim() +
+					(currentData.description.length > 155 ? '...' : '')
+				: `Read ${currentData.title} manhwa online on Panelrift. Check chapters, rankings, and ratings with a high-speed vertical reader.`
+			: undefined,
+		image: currentData?.cover_url,
+		canonicalUrl: `https://panelrift.eu.cc/series/${encodeURIComponent(slug)}`,
+		type: 'book',
+		jsonLd: currentData
+			? [
+					{
+						'@context': 'https://schema.org',
+						'@type': 'Book',
+						name: currentData.title,
+						alternateName: currentData.alternative_title || undefined,
+						author: currentData.author
+							? { '@type': 'Person', name: currentData.author }
+							: undefined,
+						image: currentData.cover_url || undefined,
+						description: currentData.description || undefined,
+						genre: currentData.genres,
+						url: `https://panelrift.eu.cc/series/${encodeURIComponent(slug)}`,
+						...(currentData.rating !== null && currentData.rating_count
+							? {
+									aggregateRating: {
+										'@type': 'AggregateRating',
+										ratingValue: currentData.rating,
+										bestRating: 10,
+										worstRating: 1,
+										ratingCount: currentData.rating_count,
+									},
+								}
+							: {}),
+					},
+					{
+						'@context': 'https://schema.org',
+						'@type': 'BreadcrumbList',
+						itemListElement: [
+							{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://panelrift.eu.cc/' },
+							{
+								'@type': 'ListItem',
+								position: 2,
+								name: 'Browse',
+								item: 'https://panelrift.eu.cc/browse',
+							},
+							{
+								'@type': 'ListItem',
+								position: 3,
+								name: currentData.title,
+								item: `https://panelrift.eu.cc/series/${encodeURIComponent(slug)}`,
+							},
+						],
+					},
+				]
+			: undefined,
+	});
 
 	if (series.loading) return <DetailSkeleton />;
 	if (series.error || !series.data) {
@@ -146,7 +208,7 @@ export function SeriesPage() {
 	return (
 		<div className="space-y-10">
 			<nav aria-label="Breadcrumb" className="text-sm text-ink-400">
-				<Link to="/" className="hover:text-ink-200">
+				<Link to="/browse" className="hover:text-ink-200">
 					Browse
 				</Link>
 				<span aria-hidden="true"> / </span>
@@ -156,8 +218,9 @@ export function SeriesPage() {
 			<section className="flex flex-col gap-6 sm:flex-row">
 				<CoverImage
 					src={data.cover_url}
-					alt={data.title}
+					alt={`${data.title} Cover Art`}
 					eager
+					fetchPriority="high"
 					className="aspect-2/3 w-44 shrink-0 self-start rounded-card ring-1 ring-ink-700 sm:w-52"
 				/>
 
@@ -191,8 +254,13 @@ export function SeriesPage() {
 					{data.genres.length > 0 && (
 						<ul className="flex flex-wrap gap-2">
 							{data.genres.map((genre) => (
-								<li key={genre} className="rounded-full bg-ink-800 px-3 py-1 text-xs text-ink-200">
-									{genre}
+								<li key={genre}>
+									<Link
+										to={`/browse?include_genres=${encodeURIComponent(genre)}`}
+										className="inline-block rounded-full bg-ink-800 px-3 py-1 text-xs text-ink-200 transition hover:bg-accent-600/30 hover:text-accent-300"
+									>
+										{genre}
+									</Link>
 								</li>
 							))}
 						</ul>

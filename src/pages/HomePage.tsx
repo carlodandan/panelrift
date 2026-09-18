@@ -11,6 +11,7 @@ import {
 } from '../api/types';
 import { useResource } from '../hooks/useResource';
 import { useProgress } from '../hooks/useLibrary';
+import { useSEO } from '../hooks/useSEO';
 import { SeriesGrid } from '../components/SeriesCard';
 import { CoverImage } from '../components/CoverImage';
 import { CardGridSkeleton, Skeleton } from '../components/Skeleton';
@@ -41,7 +42,8 @@ function HeroSlide({
 					src={series.cover_url}
 					alt=""
 					className="h-full w-full object-cover blur-2xl brightness-[0.55]"
-					eager={rank === 1}
+					eager={false}
+					fetchPriority="low"
 				/>
 			</div>
 			{/* Gradient overlay - fades from bottom on mobile, from left on desktop */}
@@ -54,8 +56,9 @@ function HeroSlide({
 				{/* Cover art */}
 				<CoverImage
 					src={series.cover_url}
-					alt={series.title}
+					alt={`${series.title} Manhwa`}
 					eager={rank === 1}
+					fetchPriority={rank === 1 ? 'high' : 'low'}
 					className="aspect-2/3 w-40 shrink-0 rounded-xl shadow-2xl ring-1 ring-white/10 sm:w-52 lg:w-64"
 				/>
 
@@ -67,9 +70,9 @@ function HeroSlide({
 					</span>
 
 					{/* Title */}
-					<h1 className="mt-3 text-xl font-extrabold leading-tight text-white drop-shadow sm:text-3xl lg:text-4xl">
+					<h2 className="mt-3 text-xl font-extrabold leading-tight text-white drop-shadow sm:text-3xl lg:text-4xl">
 						{series.title}
-					</h1>
+					</h2>
 
 					{/* Meta pills */}
 					<div className="mt-3 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
@@ -266,6 +269,13 @@ function ContinueReading() {
 }
 
 export function HomePage() {
+	useSEO({
+		title: 'Panelrift — Read Manhwa Online | Daily & Weekly Rankings',
+		description:
+			'Read trending manhwa, manga, and webtoons online for free with high-speed vertical reading, daily & weekly rankings, and comprehensive search on Panelrift.',
+		canonicalUrl: 'https://panelrift.eu.cc/',
+	});
+
 	const home = useResource<Home>((signal) => api.home(signal), []);
 	const recent = useResource<BrowseList>((signal) => api.recentlyAdded(1, signal), []);
 
@@ -287,6 +297,8 @@ export function HomePage() {
 
 	return (
 		<div className="space-y-12">
+			{/* Single primary H1 for search engines & accessibility */}
+			<h1 className="sr-only">Read Trending Manhwa, Webtoons & Manga Online — Panelrift</h1>
 			{/* Per-period degradation: /v1/home fetches three rankings independently and
 			    reports the ones that failed, so a partial page is normal, not a bug. */}
 			{data.errors.length > 0 && (

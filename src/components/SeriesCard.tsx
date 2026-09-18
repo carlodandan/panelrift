@@ -20,7 +20,7 @@ export function SeriesCard({ series, rank, eager }: Props) {
 			<div className="relative overflow-hidden rounded-card bg-ink-850 ring-1 ring-ink-700 transition group-hover:ring-accent-500 group-focus-visible:ring-accent-400">
 				<CoverImage
 					src={series.cover_url}
-					alt={series.title}
+					alt={`${series.title} Manhwa Cover`}
 					eager={eager}
 					className="aspect-2/3 w-full transition duration-300 group-hover:scale-[1.03]"
 				/>

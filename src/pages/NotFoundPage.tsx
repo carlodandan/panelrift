@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
+import { useSEO } from '../hooks/useSEO';
 
 export function NotFoundPage() {
+	useSEO({
+		title: 'Page Not Found (404)',
+		description: 'The page you were looking for could not be found on Panelrift.',
+	});
+
 	return (
 		<div className="mx-auto max-w-md py-20 text-center">
 			<p className="font-mono text-sm text-accent-400">404</p>
@@ -10,7 +16,7 @@ export function NotFoundPage() {
 				changed upstream — open the series and pick the chapter again.
 			</p>
 			<Link
-				to="/"
+				to="/browse"
 				className="mt-6 inline-block rounded-md bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-500"
 			>
 				Back to browse
