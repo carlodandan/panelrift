@@ -1,0 +1,15 @@
+{
+  "$schema": "https://agenticresourcediscovery.org/spec/v1/schema.json",
+  "specVersion": "1.0",
+  "name": "Panelrift",
+  "description": "Fast vertical webtoon and manhwa reader web application.",
+  "homepage": "https://panelrift.eu.cc",
+  "entries": [
+    {
+      "name": "llms.txt",
+      "type": "documentation",
+      "url": "https://panelrift.eu.cc/llms.txt",
+      "description": "AI-readable plain text documentation of Panelrift catalog and endpoints."
+    }
+  ]
+}

@@ -18,6 +18,7 @@ export default defineConfig({
 		tailwindcss(),
 		VitePWA({
 			registerType: 'autoUpdate',
+			injectRegister: 'script-defer',
 			workbox: {
 				globPatterns: ['**/*.{js,jsx,ts,tsx,css,html,ico,png,jpg,jpeg,webp,svg,woff,woff2,ttf,eot,xml,txt}'],
 			},

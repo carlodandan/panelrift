@@ -14,8 +14,10 @@ function Logo() {
 	return (
 		<Link to="/" className="flex shrink-0 items-center gap-2" aria-label="Panelrift, home">
 			<img
-				src="/icons/android-icon-192x192.png"
+				src="/icons/favicon-32x32.png"
 				alt="Panelrift Logo"
+				width="28"
+				height="28"
 				className="h-7 w-7 rounded-md object-cover"
 			/>
 			<span className="text-lg font-bold tracking-widest text-accent-400">PANELRIFT</span>
@@ -88,8 +90,10 @@ export function Layout() {
 						<div className="flex flex-col items-center space-y-4 sm:items-start">
 							<Link to="/" className="inline-flex items-center gap-2" aria-label="Panelrift home">
 								<img
-									src="/icons/android-icon-192x192.png"
+									src="/icons/favicon-32x32.png"
 									alt="Panelrift Logo"
+									width="32"
+									height="32"
 									className="h-8 w-8 rounded-md object-cover"
 								/>
 								<span className="text-lg font-bold tracking-widest text-accent-400">PANELRIFT</span>

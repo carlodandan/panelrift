@@ -37,15 +37,17 @@ function HeroSlide({
 			aria-hidden={!active}
 		>
 			{/* Full-bleed blurred cover backdrop */}
-			<div className="absolute inset-0">
-				<CoverImage
-					src={series.cover_url}
-					alt=""
-					className="h-full w-full object-cover blur-2xl brightness-[0.55]"
-					eager={false}
-					fetchPriority="low"
-				/>
-			</div>
+			{active && (
+				<div className="absolute inset-0">
+					<CoverImage
+						src={series.cover_url}
+						alt=""
+						className="h-full w-full object-cover blur-2xl brightness-[0.55]"
+						eager={rank === 1}
+						fetchPriority="low"
+					/>
+				</div>
+			)}
 			{/* Gradient overlay - fades from bottom on mobile, from left on desktop */}
 			<div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-ink-950/90 via-ink-950/50 to-ink-950/10" />
 			{/* Bottom fade for dots */}
@@ -190,11 +192,15 @@ function HeroSlideshow({ items }: { items: ManhwaSummary[] }) {
 							aria-selected={i === current}
 							aria-label={`Slide ${i + 1}: ${series.title}`}
 							onClick={() => setCurrent(i)}
-							className={[
-								'h-2 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400',
-								i === current ? 'w-6 bg-accent-400' : 'w-2 bg-white/30 hover:bg-white/60',
-							].join(' ')}
-						/>
+							className="flex min-h-7 min-w-7 items-center justify-center rounded-full p-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400"
+						>
+							<span
+								className={[
+									'h-2 rounded-full transition-all duration-300',
+									i === current ? 'w-6 bg-accent-400' : 'w-2 bg-white/30 hover:bg-white/60',
+								].join(' ')}
+							/>
+						</button>
 					))}
 				</div>
 			)}

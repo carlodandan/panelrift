@@ -1,29 +1,38 @@
 <!doctype html>
 <html lang="en" class="dark">
 	<head>
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-NCNW8X647V"></script>
+		<!-- Google Analytics & Google Tag Manager (Queued immediately, loaded on idle) -->
 		<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag() {
-				dataLayer.push(arguments);
+				window.dataLayer.push(arguments);
 			}
 			gtag('js', new Date());
-
 			gtag('config', 'G-NCNW8X647V');
-		</script>
-		<!-- Google Tag Manager -->
-		<script>
-			(function (w, d, s, l, i) {
-				w[l] = w[l] || [];
-				w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-				var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s),
-					dl = l != 'dataLayer' ? '&l=' + l : '';
-				j.async = true;
-				j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-				f.parentNode.insertBefore(j, f);
-			})(window, document, 'script', 'dataLayer', 'GTM-W98QLB4X');
+
+			function loadAnalytics() {
+				var s = document.createElement('script');
+				s.async = true;
+				s.src = 'https://www.googletagmanager.com/gtag/js?id=G-NCNW8X647V';
+				document.head.appendChild(s);
+
+				(function (w, d, s, l, i) {
+					w[l] = w[l] || [];
+					w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+					var f = d.getElementsByTagName(s)[0],
+						j = d.createElement(s),
+						dl = l != 'dataLayer' ? '&l=' + l : '';
+					j.async = true;
+					j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+					f.parentNode.insertBefore(j, f);
+				})(window, document, 'script', 'dataLayer', 'GTM-W98QLB4X');
+			}
+
+			if ('requestIdleCallback' in window) {
+				window.requestIdleCallback(loadAnalytics);
+			} else {
+				window.addEventListener('load', loadAnalytics);
+			}
 		</script>
 		<!-- End Google Tag Manager -->
 		<meta charset="UTF-8" />
@@ -51,6 +60,8 @@
 		<meta name="theme-color" content="#0b0c11" />
 
 		<!-- Preconnect & DNS-Prefetch -->
+		<link rel="preconnect" href="https://imgsrv5.com" crossorigin />
+		<link rel="dns-prefetch" href="https://imgsrv5.com" />
 		<link rel="preconnect" href="https://www.googletagmanager.com" />
 		<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
