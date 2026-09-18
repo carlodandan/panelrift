@@ -6,7 +6,7 @@ This document outlines the high-level architecture, system components, data flow
 
 ## 1. System Overview
 
-Panelrift is a high-performance web client built for discovering, browsing, and reading manhwa and webtoons. It is deployed as a single-page application (SPA) on Cloudflare Pages, consuming data from the headless `manhwa-api` worker over internal Cloudflare service bindings.
+Panelrift is a high-performance web client built for discovering, browsing, and reading manhwa and webtoons. It is deployed as a single-page application (SPA) on Cloudflare Pages, consuming data from the headless `panelrift-api` worker over internal Cloudflare service bindings.
 
 ```mermaid
 graph TD

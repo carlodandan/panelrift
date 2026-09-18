@@ -1,7 +1,7 @@
 // functions/api/[[path]].ts
 
 /**
- * Same-origin proxy in front of the manhwa-api worker.
+ * Same-origin proxy in front of the panelrift-api worker.
  *
  * The browser only ever calls `/api/*` on this domain, so CORS never enters the
  * picture. Forwarding happens over a service binding, which Cloudflare dispatches
@@ -14,7 +14,7 @@
  */
 
 interface Env {
-	/** Service binding to the deployed `manhwa-api` worker. See wrangler.jsonc. */
+	/** Service binding to the deployed `panelrift-api` worker. See wrangler.jsonc. */
 	API: { fetch(request: Request): Promise<Response> };
 	/**
 	 * Shared secret the worker checks before serving anything. Set it on both ends:

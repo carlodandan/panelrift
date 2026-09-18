@@ -5,7 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import Sitemap from 'vite-plugin-sitemap';
 
 /**
- * The `/api` prefix is proxied to a locally running manhwa-api worker in dev, so
+ * The `/api` prefix is proxied to a locally running panelrift-api worker in dev, so
  * the browser only ever talks to one origin and CORS never enters the picture.
  *
  * A deploy keeps the same `/api` prefix: functions/api/[[path]].ts serves it from

@@ -1,6 +1,6 @@
 # Panelrift
 
-A manhwa reading site built on [`manhwa-api`](https://github.com/carlodandan/manhwa-api). React + Vite + Tailwind,
+A manhwa reading site built on [`panelrift-api`](https://github.com/carlodandan/panelrift-api). React + Vite + Tailwind,
 deployable as static files anywhere.
 
 It is an original interface rather than a copy of any existing site's design: the
@@ -70,7 +70,7 @@ deploys get `403` on `/api/*`. The Function deletes any inbound `X-Proxy-Secret`
 before setting its own, so a caller cannot smuggle a value of their choosing through.
 
 To exercise the Function locally instead of the Vite proxy, run
-`wrangler pages dev dist --service API=manhwa-api` with the worker running next to
+`wrangler pages dev dist --service API=panelrift-api` with the worker running next to
 it, and drop the `rewrite` from the Vite proxy so the `/api` prefix survives. Neither
 side needs the secret locally: the worker skips the check when `PROXY_SECRET` is unset.
 

@@ -3,7 +3,7 @@
 	"private": true,
 	"version": "0.1.0",
 	"type": "module",
-	"description": "Web client for manhwa-api",
+	"description": "Web client for panelrift-api",
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
