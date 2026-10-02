@@ -1,7 +1,10 @@
 <!doctype html>
 <html lang="en" class="dark">
 	<head>
-		<!-- Google Analytics & Google Tag Manager (Queued immediately, loaded on idle) -->
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!-- Google Analytics & Google Tag Manager (Queued immediately, loaded on first interaction or delay) -->
 		<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag() {
@@ -10,32 +13,37 @@
 			gtag('js', new Date());
 			gtag('config', 'G-NCNW8X647V');
 
-			function loadAnalytics() {
-				var s = document.createElement('script');
-				s.async = true;
-				s.src = 'https://www.googletagmanager.com/gtag/js?id=G-NCNW8X647V';
-				document.head.appendChild(s);
+			(function () {
+				var loaded = false;
+				function loadAnalytics() {
+					if (loaded) return;
+					loaded = true;
+					var s = document.createElement('script');
+					s.async = true;
+					s.src = 'https://www.googletagmanager.com/gtag/js?id=G-NCNW8X647V';
+					document.head.appendChild(s);
 
-				(function (w, d, s, l, i) {
-					w[l] = w[l] || [];
-					w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-					var f = d.getElementsByTagName(s)[0],
-						j = d.createElement(s),
-						dl = l != 'dataLayer' ? '&l=' + l : '';
-					j.async = true;
-					j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-					f.parentNode.insertBefore(j, f);
-				})(window, document, 'script', 'dataLayer', 'GTM-W98QLB4X');
-			}
+					var g = document.createElement('script');
+					g.async = true;
+					g.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-W98QLB4X';
+					document.head.appendChild(g);
+				}
 
-			if ('requestIdleCallback' in window) {
-				window.requestIdleCallback(loadAnalytics);
-			} else {
-				window.addEventListener('load', loadAnalytics);
-			}
+				var events = ['scroll', 'pointerdown', 'touchstart', 'keydown'];
+				function onInteraction() {
+					events.forEach(function (e) {
+						window.removeEventListener(e, onInteraction, { passive: true });
+					});
+					loadAnalytics();
+				}
+				events.forEach(function (e) {
+					window.addEventListener(e, onInteraction, { passive: true, once: true });
+				});
+				setTimeout(loadAnalytics, 3500);
+			})();
 		</script>
 		<!-- End Google Tag Manager -->
-		<meta charset="UTF-8" />
+
 		<!-- Favicon & PWA Icons -->
 		<link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
 		<link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png" />
@@ -55,7 +63,6 @@
 
 		<meta name="msapplication-TileColor" content="#0b0c11" />
 		<meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="color-scheme" content="dark light" />
 		<meta name="theme-color" content="#0b0c11" />
 

@@ -287,9 +287,14 @@ export function HomePage() {
 
 	if (home.loading) {
 		return (
-			<div className="space-y-10">
-				<Skeleton className="h-64 w-full rounded-card" />
-				<CardGridSkeleton count={12} />
+			<div className="space-y-12">
+				<div className="hero-breakout min-h-[34rem] sm:min-h-[28rem]">
+					<Skeleton className="h-full w-full min-h-[34rem] sm:min-h-[28rem]" />
+				</div>
+				<div className="space-y-4">
+					<Skeleton className="h-6 w-36 rounded" />
+					<CardGridSkeleton count={12} />
+				</div>
 			</div>
 		);
 	}
