@@ -135,5 +135,16 @@ export function useSEO({
 				existingScript.remove();
 			}
 		};
-	}, [title, description, image, imageWidth, imageHeight, canonicalUrl, type, jsonLd, noindex, location.pathname]);
+	}, [
+		title,
+		description,
+		image,
+		imageWidth,
+		imageHeight,
+		canonicalUrl,
+		type,
+		jsonLd,
+		noindex,
+		location.pathname,
+	]);
 }

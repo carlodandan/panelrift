@@ -23,7 +23,15 @@ interface Props {
  * `referrerPolicy="no-referrer"` because image hosts commonly reject requests
  * carrying an unfamiliar Referer.
  */
-export function CoverImage({ src, alt, className, eager = false, fetchPriority, width = 288, height = 412 }: Props) {
+export function CoverImage({
+	src,
+	alt,
+	className,
+	eager = false,
+	fetchPriority,
+	width = 288,
+	height = 412,
+}: Props) {
 	const [failed, setFailed] = useState(false);
 
 	if (src === null || failed) {

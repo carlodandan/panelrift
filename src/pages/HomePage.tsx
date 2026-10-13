@@ -290,10 +290,14 @@ export function HomePage() {
 			<div className="space-y-12">
 				<header className="space-y-1">
 					<h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl lg:text-3xl">
-						Read Manhwa Online <span className="font-normal text-ink-300 text-sm sm:text-base">— Daily &amp; Weekly Rankings</span>
+						Read Manhwa Online{' '}
+						<span className="font-normal text-ink-300 text-sm sm:text-base">
+							— Daily &amp; Weekly Rankings
+						</span>
 					</h1>
 					<p className="max-w-2xl text-xs text-ink-400 sm:text-sm">
-						Browse trending webtoons, daily releases, and top-ranked series with an ad-lite vertical reader on Panelrift.
+						Browse trending webtoons, daily releases, and top-ranked series with an ad-lite vertical
+						reader on Panelrift.
 					</p>
 				</header>
 				<div className="hero-breakout min-h-[34rem] sm:min-h-[28rem]">
@@ -319,10 +323,14 @@ export function HomePage() {
 			{/* Primary H1 heading that directly aligns with page title and search intent */}
 			<header className="space-y-1">
 				<h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl lg:text-3xl">
-					Read Manhwa Online <span className="font-normal text-ink-300 text-sm sm:text-base">— Daily &amp; Weekly Rankings</span>
+					Read Manhwa Online{' '}
+					<span className="font-normal text-ink-300 text-sm sm:text-base">
+						— Daily &amp; Weekly Rankings
+					</span>
 				</h1>
 				<p className="max-w-2xl text-xs text-ink-400 sm:text-sm">
-					Browse trending webtoons, daily releases, and top-ranked series with an ad-lite vertical reader on Panelrift.
+					Browse trending webtoons, daily releases, and top-ranked series with an ad-lite vertical
+					reader on Panelrift.
 				</p>
 			</header>
 
