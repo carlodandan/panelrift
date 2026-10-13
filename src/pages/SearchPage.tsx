@@ -20,6 +20,20 @@ export function SearchPage() {
 			? `Find manhwa, manga, and webtoons matching "${urlTerm}" on Panelrift.`
 			: 'Search through thousands of manhwa, webtoons, and manga titles on Panelrift.',
 		canonicalUrl: `https://panelrift.eu.cc/search${urlTerm ? `?term=${encodeURIComponent(urlTerm)}` : ''}`,
+		noindex: Boolean(urlTerm),
+		jsonLd: {
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://panelrift.eu.cc/' },
+				{
+					'@type': 'ListItem',
+					position: 2,
+					name: 'Search',
+					item: 'https://panelrift.eu.cc/search',
+				},
+			],
+		},
 	});
 
 	// Two terms on purpose: `typed` follows the keyboard, `term` follows the debounce

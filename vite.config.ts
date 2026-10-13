@@ -27,11 +27,9 @@ export default defineConfig({
 			hostname: 'https://panelrift.eu.cc',
 
 			dynamicRoutes: [
-				'/',
 				'/browse',
 				'/rankings',
 				'/search',
-				'/library',
 			],
 
 			priority: {
@@ -39,7 +37,6 @@ export default defineConfig({
 				'/browse': 0.8,
 				'/rankings': 0.7,
 				'/search': 0.6,
-				'/library': 0.5,
 			},
 
 			readable: true,
@@ -48,6 +45,7 @@ export default defineConfig({
 				{
 					userAgent: '*',
 					allow: '/',
+					disallow: ['/library', '/read/'],
 					crawlDelay: 2,
 				},
 			],

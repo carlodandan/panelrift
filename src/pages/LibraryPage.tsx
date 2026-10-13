@@ -10,6 +10,7 @@ export function LibraryPage() {
 		description:
 			'View your bookmarked manhwa and continue reading where you left off. Stored locally in your browser on Panelrift.',
 		canonicalUrl: 'https://panelrift.eu.cc/library',
+		noindex: true,
 	});
 
 	const { list, toggle } = useBookmarks();

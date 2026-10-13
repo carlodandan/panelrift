@@ -219,6 +219,7 @@ export function ReaderPage() {
 			? `Read ${seriesName ?? 'Manhwa'} ${heading} online for free in high-resolution vertical scroll format on Panelrift.`
 			: undefined,
 		canonicalUrl: `https://panelrift.eu.cc/read/${encodeURIComponent(chapterId)}`,
+		noindex: true,
 		jsonLd: data
 			? {
 					'@context': 'https://schema.org',

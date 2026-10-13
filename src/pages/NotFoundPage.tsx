@@ -5,6 +5,7 @@ export function NotFoundPage() {
 	useSEO({
 		title: 'Page Not Found (404)',
 		description: 'The page you were looking for could not be found on Panelrift.',
+		noindex: true,
 	});
 
 	return (

@@ -156,6 +156,8 @@ export function SeriesPage() {
 						description: currentData.description || undefined,
 						genre: currentData.genres,
 						url: `https://panelrift.eu.cc/series/${encodeURIComponent(slug)}`,
+						inLanguage: 'en',
+						numberOfPages: currentData.chapter_count ?? undefined,
 						...(currentData.rating !== null && currentData.rating_count
 							? {
 									aggregateRating: {
