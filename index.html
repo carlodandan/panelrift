@@ -142,16 +142,59 @@
 	</head>
 	<body>
 		<!-- Google Tag Manager (noscript) -->
-		<noscript
-			><iframe
+		<noscript>
+			<iframe
 				src="https://www.googletagmanager.com/ns.html?id=GTM-W98QLB4X"
 				height="0"
 				width="0"
 				style="display: none; visibility: hidden"
-			></iframe
-		></noscript>
+			></iframe>
+			<div style="padding: 24px; text-align: center; color: #fff; background-color: #0b0c11">
+				<p>Please enable JavaScript to use the vertical webtoon reader, search, and dynamic features on Panelrift.</p>
+				<nav aria-label="Fallback Navigation" style="margin-top: 12px">
+					<a href="/browse" style="color: #a78bfa; margin: 0 10px">Browse Manhwa</a>
+					<a href="/rankings" style="color: #a78bfa; margin: 0 10px">Top Rankings</a>
+					<a href="/search" style="color: #a78bfa; margin: 0 10px">Search</a>
+				</nav>
+			</div>
+		</noscript>
 		<!-- End Google Tag Manager (noscript) -->
-		<div id="root"></div>
+		<div id="root">
+			<!-- Semantic pre-hydration shell for search crawlers & instant render -->
+			<header class="border-b border-ink-800 bg-ink-900/85">
+				<div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+					<a href="/" class="text-lg font-bold tracking-widest text-accent-400">PANELRIFT</a>
+					<nav aria-label="Main Navigation">
+						<ul class="flex gap-4 text-sm font-medium text-ink-200">
+							<li><a href="/" class="hover:text-accent-400">Home</a></li>
+							<li><a href="/browse" class="hover:text-accent-400">Browse</a></li>
+							<li><a href="/rankings" class="hover:text-accent-400">Rankings</a></li>
+							<li><a href="/search" class="hover:text-accent-400">Search</a></li>
+						</ul>
+					</nav>
+				</div>
+			</header>
+			<main id="main" class="mx-auto max-w-7xl px-4 py-8">
+				<header class="space-y-2 pb-6">
+					<h1 class="text-2xl font-extrabold tracking-tight text-white sm:text-3xl lg:text-4xl">
+						Panelrift — Read Manhwa Online | Daily &amp; Weekly Rankings
+					</h1>
+					<p class="max-w-3xl text-sm leading-relaxed text-ink-300 sm:text-base">
+						Read trending manhwa, webtoons, and manga online for free with live community rankings, high-speed vertical reading, and comprehensive catalog search.
+					</p>
+				</header>
+				<section class="space-y-4 pt-4">
+					<h2 class="text-lg font-semibold text-ink-100">Trending Manhwa &amp; Popular Webtoons</h2>
+					<div class="flex flex-wrap gap-3 text-sm font-medium text-accent-400">
+						<a href="/rankings?period=1d" class="rounded-md bg-ink-800 px-3 py-1.5 hover:bg-ink-700">Daily Rankings</a>
+						<a href="/rankings?period=1w" class="rounded-md bg-ink-800 px-3 py-1.5 hover:bg-ink-700">Weekly Top Releases</a>
+						<a href="/rankings?period=1m" class="rounded-md bg-ink-800 px-3 py-1.5 hover:bg-ink-700">Monthly Most Read</a>
+						<a href="/browse" class="rounded-md bg-ink-800 px-3 py-1.5 hover:bg-ink-700">Browse All Genres</a>
+						<a href="/search" class="rounded-md bg-ink-800 px-3 py-1.5 hover:bg-ink-700">Search Manhwa Catalog</a>
+					</div>
+				</section>
+			</main>
+		</div>
 		<script type="module" src="/src/main.tsx"></script>
 	</body>
 </html>

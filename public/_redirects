@@ -1,0 +1,4 @@
+# Cloudflare Pages 301 Redirects: Subdomain & Protocol Canonicalization
+https://www.panelrift.eu.cc/* https://panelrift.eu.cc/:splat 301!
+http://www.panelrift.eu.cc/* https://panelrift.eu.cc/:splat 301!
+http://panelrift.eu.cc/* https://panelrift.eu.cc/:splat 301!

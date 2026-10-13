@@ -288,6 +288,14 @@ export function HomePage() {
 	if (home.loading) {
 		return (
 			<div className="space-y-12">
+				<header className="space-y-1">
+					<h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl lg:text-3xl">
+						Read Manhwa Online <span className="font-normal text-ink-300 text-sm sm:text-base">— Daily &amp; Weekly Rankings</span>
+					</h1>
+					<p className="max-w-2xl text-xs text-ink-400 sm:text-sm">
+						Browse trending webtoons, daily releases, and top-ranked series with an ad-lite vertical reader on Panelrift.
+					</p>
+				</header>
 				<div className="hero-breakout min-h-[34rem] sm:min-h-[28rem]">
 					<Skeleton className="h-full w-full min-h-[34rem] sm:min-h-[28rem]" />
 				</div>
@@ -308,8 +316,16 @@ export function HomePage() {
 
 	return (
 		<div className="space-y-12">
-			{/* Single primary H1 for search engines & accessibility */}
-			<h1 className="sr-only">Read Trending Manhwa, Webtoons & Manga Online — Panelrift</h1>
+			{/* Primary H1 heading that directly aligns with page title and search intent */}
+			<header className="space-y-1">
+				<h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl lg:text-3xl">
+					Read Manhwa Online <span className="font-normal text-ink-300 text-sm sm:text-base">— Daily &amp; Weekly Rankings</span>
+				</h1>
+				<p className="max-w-2xl text-xs text-ink-400 sm:text-sm">
+					Browse trending webtoons, daily releases, and top-ranked series with an ad-lite vertical reader on Panelrift.
+				</p>
+			</header>
+
 			{/* Per-period degradation: /v1/home fetches three rankings independently and
 			    reports the ones that failed, so a partial page is normal, not a bug. */}
 			{data.errors.length > 0 && (
@@ -324,6 +340,34 @@ export function HomePage() {
 			)}
 
 			<HeroSlideshow items={today} />
+
+			{/* Genre & Category quick-links to boost internal link equity */}
+			<section aria-label="Popular Genres" className="space-y-3">
+				<h2 className="text-xs font-semibold uppercase tracking-widest text-ink-400">
+					Explore by Genre
+				</h2>
+				<div className="flex flex-wrap gap-2">
+					{[
+						{ name: 'Action', path: '/browse?genre=Action' },
+						{ name: 'Fantasy', path: '/browse?genre=Fantasy' },
+						{ name: 'Romance', path: '/browse?genre=Romance' },
+						{ name: 'Martial Arts', path: '/browse?genre=Martial+arts' },
+						{ name: 'Comedy', path: '/browse?genre=Comedy' },
+						{ name: 'Supernatural', path: '/browse?genre=Supernatural' },
+						{ name: 'Drama', path: '/browse?genre=Drama' },
+						{ name: 'Top Rated', path: '/browse?sort=rating' },
+						{ name: 'All Webtoons', path: '/browse?type=webtoon' },
+					].map((g) => (
+						<Link
+							key={g.name}
+							to={g.path}
+							className="rounded-full border border-ink-700 bg-ink-850 px-3.5 py-1 text-xs font-medium text-ink-200 transition hover:border-accent-500 hover:text-accent-400"
+						>
+							{g.name}
+						</Link>
+					))}
+				</div>
+			</section>
 
 			<ContinueReading />
 
