@@ -18,3 +18,11 @@ Panelrift provides a clean, high-performance web client for discovering, trackin
 - Headless API: Panelrift API Worker (Cloudflare Workers)
 - Structured Data: Schema.org WebSite, Organization, Book, BreadcrumbList
 - Sitemap: https://panelrift.eu.cc/sitemap.xml
+
+## Streaming Partners
+
+- [mStream](https://mstream.eu.cc): Movie and TV series streaming.
+- [Vi-Play](https://vi-play.pages.dev/): Movie and TV series streaming.
+- [Aenime](https://aenime.qzz.io/): Anime streaming online.
+- [Aniyume](https://aniyume.qzz.io/): Anime streaming online.
+

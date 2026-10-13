@@ -6,3 +6,10 @@ dist-ssr
 .env.*
 !.env.example
 .DS_Store
+
+# Agentic Skills
+.agent/
+.agents/
+.claude/
+.gemini/
+.github/prompts/

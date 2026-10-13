@@ -85,7 +85,7 @@ export function Layout() {
 			<footer className="border-t border-ink-800 bg-ink-900/60">
 				<div className="mx-auto max-w-7xl px-4 py-12">
 					{/* Top grid: brand + nav columns */}
-					<div className="grid gap-10 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-4">
+					<div className="grid gap-10 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-5">
 						{/* Brand */}
 						<div className="flex flex-col items-center space-y-4 sm:items-start">
 							<Link to="/" className="inline-flex items-center gap-2" aria-label="Panelrift home">
@@ -156,6 +156,73 @@ export function Layout() {
 									</li>
 								))}
 							</ul>
+						</div>
+
+						{/* Streaming Partners */}
+						<div className="space-y-4">
+							<p className="text-xs font-semibold uppercase tracking-widest text-ink-200">
+								Streaming Partners
+							</p>
+							<div className="space-y-3">
+								<div>
+									<p className="text-[11px] font-medium uppercase tracking-wider text-ink-400">
+										Movies &amp; TV Series
+									</p>
+									<ul className="mt-1.5 space-y-1.5">
+										<li>
+											<a
+												href="https://mstream.eu.cc"
+												target="_blank"
+												rel="noopener"
+												className="text-sm text-ink-400 transition hover:text-accent-400"
+												title="mStream — Movie and TV Series Streaming"
+											>
+												mStream
+											</a>
+										</li>
+										<li>
+											<a
+												href="https://vi-play.pages.dev/"
+												target="_blank"
+												rel="noopener"
+												className="text-sm text-ink-400 transition hover:text-accent-400"
+												title="Vi-Play — Movie and TV Series Streaming"
+											>
+												Vi-Play
+											</a>
+										</li>
+									</ul>
+								</div>
+								<div>
+									<p className="text-[11px] font-medium uppercase tracking-wider text-ink-400">
+										Anime Streaming
+									</p>
+									<ul className="mt-1.5 space-y-1.5">
+										<li>
+											<a
+												href="https://aenime.qzz.io/"
+												target="_blank"
+												rel="noopener"
+												className="text-sm text-ink-400 transition hover:text-accent-400"
+												title="Aenime — Anime Streaming"
+											>
+												Aenime
+											</a>
+										</li>
+										<li>
+											<a
+												href="https://aniyume.qzz.io/"
+												target="_blank"
+												rel="noopener"
+												className="text-sm text-ink-400 transition hover:text-accent-400"
+												title="Aniyume — Anime Streaming"
+											>
+												Aniyume
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
 						</div>
 
 						{/* Disclaimer */}
